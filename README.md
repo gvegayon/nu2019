@@ -1,6 +1,8 @@
 # Big Problems for Small Networks: Statistical Analysis of Small Networks and Team Performance
 
-Small network data such as team, family, or personal networks, is common in many
+**Speaker**: [George G. Vega Yon](https://ggvy.cl)
+
+**Abstract**: Small network data such as team, family, or personal networks, is common in many
 fields that study social networks. Although the analysis of small networks may
 appear simplistic relative to the difficulties posed by "big" datasets, there are
 at least two key challenges: (1) fitting statistical models to explain the network
@@ -22,7 +24,7 @@ during the talk will be conducted on location and time TBA.
 
 # About the Speaker
 
-[](fig/headshot.jpg){style="width:300px"}
+<img src="fig/headshot.jpg" width="300px">
 
 [George G. Vega Yon](https://ggvy.cl) is a Biostatistics Ph.D student and Research Programmer in
 the Department of Preventive Medicine at USC's Keck School of Medicine. His
