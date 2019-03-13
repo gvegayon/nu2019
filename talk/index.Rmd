@@ -6,11 +6,12 @@ author:
 date: "SONIC Speaker\\linebreak[4]March 12, 2019"
 output:
   beamer_presentation:
-    keep_tex: false
+    keep_tex: true
     includes:
       in_header: ergmitos-header.tex
 fontsize: 10pt
 aspectratio: 169
+bibliography: bibliography.bib
 ---
 
 ## Funding Acknowledgement
@@ -51,6 +52,15 @@ of Southern California’s Center for High-Performance Computing (https://hpcc.u
 
 # Exponential Random Graph Models for Small Networks
 
+## Exponential Random Graph Models
+
+\begin{figure}
+\centering
+\includegraphics[height=.7\textheight]{ukfaculty-igraph.png}
+\caption{Friendship network of a UK university faculty. Source: \texttt{igraphdata} R package (Gabor Csardi, 2015)}
+\end{figure}
+
+How can we explain what we see here?
 
 ## ERGMs {fragile=true}
 
@@ -77,27 +87,86 @@ Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and eq
 \centering
 \def\svgwidth{.4\linewidth}
 \input{fig/ergm-terms.pdf_tex}
-\caption{Examples of statistics $\sufstats{}$ used in ERGMs\label{fig:ergm-structs}}
+\caption{\label{fig:ergm-structs}Besides of the common edge count statistic (number of ties in a graph), ERGMs allow measuring other more complex structures that can be captured as sufficient statistics. }
 \end{figure}
 
+---
+
+\large \textbf{Example of model} \normalsize
+
+
+\begincols
+
+\begincol{.4\linewidth}
+
+In this network\linebreak
+
+```{r simple-model, echo=FALSE, cache=TRUE, fig.align='center', fig.width=8, fig.height=5, out.width='.9\\linewidth'}
+set.seed(13)
+# x <- ergmito::rbernoulli(4)
+x <- structure(c(0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0), .Dim = c(4L, 
+4L))
+netplot::nplot(
+  igraph::graph_from_adjacency_matrix(x), vertex.color = "gray60", edge.curvature = 0,
+  edge.color = ~ego + alter, edge.arrow.size=.07, edge.arrow.color="black",
+  vertex.size=3)
+```
+
+\pause
+
+We see 4 **edges**, 1 **transitive triad** and **no mutual ties**.
+
+\endcol
+
+\pause
+
+\begincol{.4\linewidth}
+
+The probability function of this model would be
+
+\begin{equation*}
+\Prcond{\Graph = \graph}{\theta} = \frac{\exp{4\theta_{edges} + \theta_{ttriads}}}{%
+\sum_{\graph'\in\GRAPH} \exp{\transpose{\theta} \sufstats{\graph'}}}
+\end{equation*}
+
+\noindent with $\theta = \transpose{[\theta_{edges}\quad \theta_{ttriads} \quad \theta_{mutual}]}$
+
+\endcol
+
+\endcols
+
+```{r simple-model-estimates, cache=TRUE, echo=FALSE}
+estimates0 <- ergmito::ergmito(x ~ edges + ttriad + mutual)
+estimates0_coefs <- sprintf("%03.2f", coef(estimates0))
+```
+
+\pause
+
+\vspace{1cm}
+
+This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low density), `r estimates0_coefs[2]` (high chance of ttriads), and `r estimates0_coefs[3]` (low chance of mutuality) for the parameters `edges`, `ttriads`, and `mutual` respectively.
 
 ## Estimation of ERGMs
 
-\begin{itemize}
-	\item Calculating of the normalizing constant in \eqref{eq:ergm} makes ERGMs difficult to estimate.
-	\item For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.
-	\item While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy}.
-	\item Model degeneracy is particularly problematic with small networks.
-\end{itemize}
+
+- Calculating of the normalizing constant in \eqref{eq:ergm} makes ERGMs difficult to estimate.
+
+- For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.
+
+- While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy}.
+
+- Model degeneracy is particularly problematic with small networks.
+
 
 ## ERGMs for Small Networks
 			
-\begin{itemize}
-	\item In the case of small networks (e.g. at most 6 nodes), the calculation of $\kappa$ becomes computationally feasible.
-	\item This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimizations techniques.
-	\item More importantly, in the case that a common data generating process can be assumed, a pooled version of the ERGMs can be estimated.
-	\item We have implemented  this and more in the `ergmito` R package (\url{https://github.com/muriteams/ergmito})
-\end{itemize}
+- In the case of small networks (e.g. at most 6 nodes), the calculation of $\kappa$ becomes computationally feasible.
+
+- This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimizations techniques.
+
+- More importantly, in the case that a common data generating process can be assumed, a pooled version of the ERGMs can be estimated.
+
+- We have implemented  this and more in the `ergmito` R package (\url{https://github.com/muriteams/ergmito})
 
 ## Simulation Study
 			
@@ -168,3 +237,4 @@ Two common approaches: Generalized Linear Models (GLMs), or Mantel-like tests (a
 ## Fancy
 
 \input{fig/struct-test.pdf_tex}
+

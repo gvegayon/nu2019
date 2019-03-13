@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{243.87829638bp}%
+    \setlength{\unitlength}{187.11689146bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,16 +50,18 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.55394817)%
+  \begin{picture}(1,1.21631832)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{ergm-terms.pdf}}%
-    \put(0.6247364,0.2097619){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Transitive Triad $\sum_{i,j,k}y_{ij}y_{jk}y_{ik}$\\\\\end{tabular}}}}%
+    \put(0.79513704,0.91539605){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Transitive Triad\\$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$\\\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{ergm-terms.pdf}}%
-    \put(0.62059197,0.35345629){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}\raggedleft Mutual Ties $\sum_{i,j}y_{ij}y_{ji}$\\\\\end{tabular}}}}%
+    \put(0.79852938,1.15588812){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Mutual Ties \\$\sum_{i\neq j}y_{ij}y_{ji}$\\\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{ergm-terms.pdf}}%
-    \put(0.62059197,0.04062021){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Homophily $\sum_{i,j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$\\\\\end{tabular}}}}%
+    \put(0.79852938,0.69093698){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Homophily\\$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$\\\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{ergm-terms.pdf}}%
-    \put(0.62059197,0.48653929){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Edge count $\sum_{i,j}y_{ij}$\\\\\end{tabular}}}}%
+    \put(0.79301815,0.47449418){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Covariate Effect for Incoming Ties\\$\sum_{i\neq j}y_{ij}x_j$\\\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{ergm-terms.pdf}}%
+    \put(0.80409545,0.17388157){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Four Cycle\\$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$\\\\\end{tabular}}}}%
   \end{picture}%
 \endgroup%
