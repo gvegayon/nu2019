@@ -11,10 +11,22 @@ output:
     keep_tex: true
     includes:
       in_header: ergmitos-header.tex
+classoption: handout
 fontsize: 10pt
 aspectratio: 169
 bibliography: bibliography.bib
 ---
+
+```{r setup, include=FALSE}
+knitr::knit_hooks$set(smallsize = function(before, options, envir) {
+    if (before) {
+        "\\footnotesize\n\n"
+    } else {
+        "\n\\normalsize\n\n"
+    }
+})
+knitr::opts_chunk$set(echo = TRUE, smallsize=TRUE)
+```
 
 ## Contents
 
@@ -171,22 +183,6 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 
 - Model degeneracy is particularly problematic with small networks.
 
-## Estimation of ERGM\only<2>{\textcolor{USCCardinal}{ito}}s (cont'd)
-
-Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm (one of the approaches)
-
-1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
-
-2.  While the algorithm doesn't converge, do:
-    
-    a.  \textcolor<2->{lightgray}{Simulate $B$ graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using an important sampler}
-    
-    b.  \textcolor<2->{lightgray}{Use the simulated sequence of graphs to approximate the likelihood function. And with this approximation} \textcolor<2->{USCCardinal}{update the parameter $\theta_0$ using a Newton-Raphson step}.
-    
-    c.  next iteration\pause
-    
-By skiping the MCMC part we are able to get MLE estiamates directly avoiding the degeneracy problem latent in MCMC, faster, and more accurately.
-
 ## ERGMs for Small Networks
 
 \begin{figure}
@@ -208,11 +204,54 @@ $$
 	}{
 		\kappa_p\left(\params, \Indepvar_p\right)
 	}
-$$
+$$ 
 \pause
-- We have implemented  this and more in the `ergmito` (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package (\url{https://github.com/muriteams/ergmito})
+
+How different is this from the "normal" way to fit ERGMs?
+
+## Estimation of ERGM\only<2>{\textcolor{USCCardinal}{ito}}s (cont'd)
+
+Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm (one of the approaches)
+
+1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
+
+2.  While the algorithm doesn't converge, do:
+    
+    a.  \textcolor<2->{lightgray}{Simulate $B$ graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using an important sampler}
+    
+    b.  \textcolor<2->{lightgray}{Use the simulated sequence of graphs to approximate the likelihood function. And with this approximation} \textcolor<2->{USCCardinal}{update the parameter $\theta_0$ using a Newton-Raphson step}.
+    
+    c.  next iteration\pause
+    
+By skiping the MCMC part we:
+
+1.  are able to get MLE estiamates directly,
+
+2.  *avoiding the degeneracy problem* latent in MCMC, and
+
+3.  obtain *more accurate* estimates *faster*. \pause
+
+We have implemented  this and more in the `ergmito` R package
+
+
+---
+
+An important pause...
+
+\begin{minipage}[c]{1\linewidth}
+\large \textbf{ito, ita}: Suffix in spanish used to denote small. e.g.:
+
+\hspace{.5cm} \textit{¡Que lindo ese perr\textcolor{USCCardinal}{\textbf{ito}}!} / \textit{What a beautiful little dog!}
+
+\hspace{.5cm} \textit{¿Me darias una tac\textcolor{USCCardinal}{\textbf{ita}} de azúcar?} / \textit{Would you give me a small cup of sugar?}
+\normalsize
+\end{minipage}\pause
+
+\alert{Special thanks to George Barnett who proposed the name during the 2018 NASN!}
 
 ## Features of `ergmito`
+
+
 
 This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package has the following features\pause
 
@@ -224,25 +263,69 @@ This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R
 
 - In the same spirit of the exhaustive enumeration, includes a simulation function for small networks sampling from the true distribution. 
 
+
+
 [^whyupto6]: A directed graph of size 6 has a support set with $2^{6\times(6 - 1)} = 1,073,741,824$ elements.
+
+## `ergmito` example
+
+```{r loading-fivenets}
+library(ergmito)
+data(fivenets, package = "ergmito")
+```
+
+```{r plotfivenets, warning=FALSE, message=FALSE, echo=FALSE, fig.width=6, fig.height=3, out.width='.5\\linewidth', fig.align='center'}
+library(sna)
+library(network)
+op <- par(mfrow = c(2, 3), mai=rep(0, 4), oma = rep(0, 4))
+ans <- lapply(fivenets, function(f) {
+  gplot(f, vertex.col = get.vertex.attribute(f, "female"), vertex.cex = 2)
+  # box()
+  })
+plot.new()
+plot.window(xlim = c(0, 1), ylim = c(0, 1))
+legend("center", fill = 0:1, legend = c("Male", "Female"), cex=1, bty="n")
+par(op)
+```
+
+----
+
+```{r}
+# Looking at one of the five networks
+fivenets[[1]]
+```
+
+\pause So how can we fit this model?
+
+## `ergmito` example (cont'd)
+
+The same as you would do with the `ergm` package:
+
+```{r fit-fivenets}
+(model1 <- ergmito(fivenets ~ edges + nodematch("female")))
+```
+
+```{r fit-fivenets-print, results='asis', echo=FALSE}
+out <- texreg::texreg(model1)
+cat(gsub("#", "\\#", unclass(out), fixed=TRUE))
+```
+
+
+
 
 ## Simulation Study
 			
 			
 We conducted a simulation study to explore the properties of MLE for small networks (a.k.a. ERGMito). To generate each sample of teams:\pause
 
-1. Draw the population parameters from a piecewise Uniform with values in $[-4, -.1]\cup[.1, 4]$\pause
+1. Draw the **population parameters** from a piecewise Uniform with values in $[-4, -.1]\cup[.1, 4]$\pause
 
-2. We will draw groups of sizes 3 to 5. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).\pause
+2. We will draw **groups of sizes 3 to 5**. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).\pause
 
-3. Use the drawn parameters and group sizes to generate random graphs using an ERGM data generating process.\pause
+3. Use the **drawn parameters** and **group sizes** to **generate random graphs** using an ERGM data generating process.\pause
 
 We simulated 100,000 samples, each one composed of an average of 30 networks.
 
-## A drawing of the simulation process
-
-
-			
 ## Simulation Study (cont'd)
 
 \begin{figure}
@@ -337,6 +420,39 @@ We can use the distribution of the sequence $\{s_1, \dots, s_B\}$ as null to com
 
 ## Concluding remarks
 
+Exponential Random Graph Models for Small Networks:\pause
+
+1.  Not a new thing,\pause what's new is the tool to do so in a smooth way\pause
+
+2.  Still work to do (on the development side of things): Goodness of fit tests, better algorithms for drawing random graphs, bayesian model\pause
+
+3.  Can be extended to other types of ERGMs... our next target: TERGMs (Separable Exponential Random Graph Models)\pause
+
+Test for Association between graph level outcomes and graph structures:\pause
+
+1.  Still need to run simulation studies\pause
+
+2.  Key question 1: What happens when the graph structure is in both the ERGM and the stat\pause
+
+3.  What about other properties such as type I error?
+
+
+
 ## Thanks!
 
-\maketitle
+\begin{centering}
+\includegraphics[width = .1\linewidth]{usc.pdf}
+
+\large \textbf{\textcolor{USCCardinal}{George G. Vega Yon}}
+
+\normalsize Let's chat! 
+
+\href{mailto:vegayon@usc.edu}{vegayon@usc.edu} 
+
+\href{https://ggvy.cl}{https://ggvy.cl} 
+
+\includegraphics[width=.02\linewidth]{github.png}\href{https://github.com/gvegayon}{@gvegayon}
+
+\includegraphics[width=.02\linewidth]{twitter.png}\href{https://twitter.com/gvegayon}{@gvegayon}
+
+\end{centering}
