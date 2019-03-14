@@ -1,11 +1,11 @@
 ---
 title: "Big Problems for \\color{USCCardinal} Small Networks\\color{black}: Statistical Analysis of Small Networks and Team Performance"
 author:
-  - "\\textbf{George G Vega Yon}\\footnote{Contact: \\url{vegayon@usc.edu}. We thank members of our MURI research team, USC's Center for Applied Network Analysis, Andrew Slaughter, and attendees of the NASN 2018 conference for their comments.}"
-  - Kayla de la Haye
-date: "SONIC Speaker\\linebreak[4]March 12, 2019"
+  - "\\textbf{George G Vega Yon}"
+  - "Kayla de la Haye \\vspace{-.5cm}"
+date: "SONIC Speaker Series\\linebreak[4]Northwestern University, IL\\linebreak[4]March 20, 2019"
 institute:
-  - "\\includegraphics[width=.15\\linewidth]{usc.pdf}\\linebreak[4]\\normalsize Department of Preventive Medicine"
+  - "\\includegraphics[width=.15\\linewidth]{usc.pdf}\\linebreak[4]Department of Preventive Medicine"
 output:
   beamer_presentation:
     keep_tex: true
@@ -20,16 +20,16 @@ bibliography: bibliography.bib
 
 \tableofcontents
 
-## Funding Acknowledgement
+## Acknowledgements
 
 \begincols
-\begincol{.2\linewidth}
+\begincol{.15\linewidth}
 
 \includegraphics[width=.8\linewidth]{ARO_logo.png}
 
 \endcol
 
-\begincol{.79\linewidth}
+\begincol{.84\linewidth}
 This material is based upon work support by, or in part by, the U.S. Army Research
 Laboratory and the U.S. Army Research Office under grant number W911NF-15-1-0577
 \endcol
@@ -38,16 +38,18 @@ Laboratory and the U.S. Army Research Office under grant number W911NF-15-1-0577
 
 
 \begincols
-\begincol{.79\linewidth}
+\begincol{.84\linewidth}
 
 Computation for the work described in this paper was supported by the University
 of Southern California’s Center for High-Performance Computing (https://hpcc.usc.edu).
 \endcol
 
-\begincol{.2\linewidth}
+\begincol{.15\linewidth}
 \includegraphics[width = 1\linewidth]{usc.pdf}
 \endcol
 \endcols
+
+We thank members of our MURI research team, USC's Center for Applied Network Analysis, Andrew Slaughter, and attendees of the NASN 2018 conference for their comments.
 
 
 \begin{figure}
@@ -56,7 +58,7 @@ of Southern California’s Center for High-Performance Computing (https://hpcc.u
 \end{figure}
 
 
-# Exponential Random Graph Models for Small Networks
+# Part I: Exponential Random Graph Models for Small Networks
 
 ## Exponential Random Graph Models
 
@@ -70,22 +72,28 @@ How can we explain what we see here?
 
 ## ERGMs {fragile=true}
 
-\begin{itemize}
-\item The \emph{lingua franca} of social network analysis.
-\item Seeks to answer the question: \emph{What local social structures gave origin to a given observed graph?}
-\item The model is centered around a vector of \textbf{sufficient statistics} $\sufstats{}$, and is operationalized as:
-\begin{equation}
-	\Prcond{\Graph = \graph}{\params, \Indepvar} = \frac{%
-		\exp{\transpose{\params}\sufstats{\graph, \Indepvar}}%	
-	}{
-		\kappa\left(\params, \Indepvar\right)
-	},\quad\forall \graph\in\GRAPH\label{eq:ergm}
-\end{equation}
-Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.
-\item Overall, an ERGM identifies the set of parameters $\params$ that maximize the likelihood of observing a given graph $\graph$ over the entire set of possible networks, $\GRAPH$,
-\item In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$, terms.
-\item See Wasserman, Pattison, Robins, Snijders, Handcock and others.
-\end{itemize}
+- The \emph{lingua franca} of social network analysis.\pause
+
+- Seeks to answer the question: \emph{What local social structures gave origin to a given observed graph?}\pause
+
+- The model is centered around a vector of \textbf{sufficient statistics} $\sufstats{}$, and is operationalized as:
+  
+  \begin{equation}
+  	\Prcond{\Graph = \graph}{\params, \Indepvar} = \frac{%
+  		\exp{\transpose{\params}\sufstats{\graph, \Indepvar}}%	
+  	}{
+  		\kappa\left(\params, \Indepvar\right)
+  	},\quad\forall \graph\in\GRAPH\label{eq:ergm}
+  \end{equation}
+  
+  Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.\pause
+  
+- Overall, an ERGM identifies the set of parameters $\params$ that maximize the likelihood of observing a given graph $\graph$ over the entire set of possible networks, $\GRAPH$,\pause
+
+- In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$, terms.\pause
+
+- See Wasserman, Pattison, Robins, Snijders, Handcock and others.
+
 
 ## Structures
 
@@ -155,20 +163,42 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 ## Estimation of ERGMs
 
 
-- Calculating of the normalizing constant in \eqref{eq:ergm}, $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$, makes ERGMs difficult to estimate.
+- Calculating of the normalizing constant in \eqref{eq:ergm}, $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$, makes ERGMs difficult to estimate.\pause
 
-- For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.
+- For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.\pause
 
-- While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy}.
+- While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy}.\pause
 
 - Model degeneracy is particularly problematic with small networks.
 
+## Estimation of ERGM\only<2>{\textcolor{USCCardinal}{ito}}s (cont'd)
+
+Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm (one of the approaches)
+
+1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
+
+2.  While the algorithm doesn't converge, do:
+    
+    a.  \textcolor<2->{lightgray}{Simulate $B$ graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using an important sampler}
+    
+    b.  \textcolor<2->{lightgray}{Use the simulated sequence of graphs to approximate the likelihood function. And with this approximation} \textcolor<2->{USCCardinal}{update the parameter $\theta_0$ using a Newton-Raphson step}.
+    
+    c.  next iteration\pause
+    
+By skiping the MCMC part we are able to get MLE estiamates directly avoiding the degeneracy problem latent in MCMC, faster, and more accurately.
 
 ## ERGMs for Small Networks
-			
-- In the case of small networks (e.g. at most 6 nodes), the calculation of $\kappa$ becomes computationally feasible.
 
-- This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimizations techniques.
+\begin{figure}
+\centering
+\includegraphics[height=.9\textheight]{plot-graph-4-1.pdf}
+\end{figure}
+
+## ERGMs for Small Networks (cont'd)
+			
+- In the case of small networks (e.g. at most 6 nodes), the calculation of $\kappa$ becomes computationally feasible.\pause
+
+- This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimizations techniques.\pause
 
 - More importantly, in the case that a common data generating process can be assumed, a pooled version of the ERGMs can be estimated.
 
@@ -179,35 +209,39 @@ $$
 		\kappa_p\left(\params, \Indepvar_p\right)
 	}
 $$
-
+\pause
 - We have implemented  this and more in the `ergmito` (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package (\url{https://github.com/muriteams/ergmito})
 
 ## Features of `ergmito`
 
-This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package has the following features
+This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package has the following features\pause
 
-- Built on top of [**statnet**](https://statnet.org)'s [`ergm`](https://github.com/statnet/ergm) R package.
+- Built on top of [**statnet**](https://statnet.org)'s [`ergm`](https://github.com/statnet/ergm) R package.\pause
 
-- Allows estimating ERGMs for small networks (less than 7 and perhaps 6)[^whyupto6] via MLE.
+- Allows estimating ERGMs for small networks (less than 7 and perhaps 6)[^whyupto6] via MLE.\pause
 
-- Implements pooled ERGM models.
+- Implements pooled ERGM models.\pause
 
 - In the same spirit of the exhaustive enumeration, includes a simulation function for small networks sampling from the true distribution. 
 
-[^whyupto6]: A directed graph of size 6 has 1,073,741,824
+[^whyupto6]: A directed graph of size 6 has a support set with $2^{6\times(6 - 1)} = 1,073,741,824$ elements.
 
 ## Simulation Study
 			
 			
-We conducted a simulation study to explore the properties of MLE for small networks (a.k.a. ERGMito). To generate each sample of teams:
+We conducted a simulation study to explore the properties of MLE for small networks (a.k.a. ERGMito). To generate each sample of teams:\pause
 
-1. Draw the population parameters from a piecewise Uniform with values in $[-4, -.1]\cup[.1, 4]$
+1. Draw the population parameters from a piecewise Uniform with values in $[-4, -.1]\cup[.1, 4]$\pause
 
-2. We will draw groups of sizes 3 to 5. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).
+2. We will draw groups of sizes 3 to 5. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).\pause
 
-3. Use the drawn parameters and group sizes to generate random graphs using an ERGM data generating process.
+3. Use the drawn parameters and group sizes to generate random graphs using an ERGM data generating process.\pause
 
-  We simulated 100,000 samples, each one composed of an average of 30 networks.
+We simulated 100,000 samples, each one composed of an average of 30 networks.
+
+## A drawing of the simulation process
+
+
 			
 ## Simulation Study (cont'd)
 
@@ -217,49 +251,65 @@ We conducted a simulation study to explore the properties of MLE for small netwo
 \caption{Empirical power of Pooled-ERGM estimates at various levels of effect size. As expected, power increases significantly with sample size (\# of networks per sample). Interestingly, the discovery rate of an effect size within $[1, 2)$ is very high even with a sample size of 20-30 networks. More extreme points have higher volatility due to small number of samples included.}
 \end{figure}
 
-# Testing
+# Part II: Association between group structure and team performance
 
 ## Testing effects of social network structure on group performance
 			
-Two common approaches: Generalized Linear Models (GLMs), or Mantel-like tests (a.k.a. permutation tests). Both have limitations:
+Two common approaches: Generalized Linear Models (GLMs), or Mantel-like tests (a.k.a. permutation tests). Both have limitations:\pause
 	
-\begin{itemize}
-	
-	\item GLMs often lack power: reaching higher levels of discovery rates implies working with a larger number of teams, which can be impractical.
-	\item Permutation tests oversimplify the network model:  typically degree sequence characterizes the family of networks
-	Proposed solution: a semiparametric test version of a permutation tests that aims to overcome both problems using Exponential Random Graph Models.
-\end{itemize}
+- GLMs:\pause
+    
+    - Sample size is problematic: How costly is getting enough teams to run get a desired level of power?\pause
+
+- Permutation tests:\pause
+    
+    - Common approach: sample from graphs with the same degree sequence--the observed sequence of in/out degree\pause
+      
+    - This is oversimplifying/constraining\pause
+    
+    - And worse, in a network of size 4, how many different networks can be observed **holding the degree sequence fixed**?
+  
+## An idea
+
+- Lack of power:\pause What if we just simulate them?\pause OK, but aren't we doing this with permutation tests?...
+
+- Sure, but what about ERGMs?\pause Ultimately these models describe a distribution of graphs that have *on average* the same set of network statistics\pause
+
+- This overcomes the problem observed in permutation tests.
+
 
 ## A semiparametric test
 			
-\textbf{Preamble}
+**Notation**
 
-\begin{itemize}
-	\item $\Graph = \{\graph_j\}$ is a sequence of $J$ graphs that share a common data-generating-process, e.g. teams formed in a lab.
-	\item Each network has node-level attributes $x \in \mathcal{X}$.
-	\item A group(graph) level outcome variable, such as team performance, $Y$.
-	\item Under the null, network structure and group performance are not associated, this is $Y\perp\Graph$.
-\end{itemize}
+- $\Graph = \{\graph_j\}$ is a sequence of $J$ graphs that share a common data-generating-process, e.g. teams formed in a lab.
+
+- Each network has node-level attributes $x \in \mathcal{X}$.
+
+- A group(graph) level outcome variable, such as team performance, $Y$.
+
+- Under the null, network structure and group performance are not associated, this is $Y\perp\Graph$.
+
+
+
 
 ## Algorithm
 
-\begin{enumerate}
-	\item Estimate an ERGM (estimates can come from a single graph or pooled estimates). We denote the data-generating-process of this model as $\mathcal{D}: \Theta\times \mathcal{X}\mapsto \GRAPH$.
-	
-	\item Calculate the value $s_0 = s(\Graph, Y)$.
-	\item Now, for $b \in \{1, \dots, B\}$ do:
-	
-	\begin{enumerate}
-		\item For each group $j$ in $\{1, \dots, J\}$, draw a new network $\graph_j^b\sim\mathcal{D}(\hat{\theta}, X_j)$, this new sequence is denoted $\Graph^b$
-		\item Using $\Graph^b$ and $Y$, calculate $s_b = s(\Graph^b, Y)$
-		\item Next $b$.
-	\end{enumerate}
+1.  Estimate an ERGM (estimates can come from a single graph or pooled estimates). We denote the data-generating-process of this model as $\mathcal{D}: \Theta\times \mathcal{X}\mapsto \GRAPH$.
 
-	This will generate a null distribution for the statistic $s$, which we can use to compare against the observed statistic, $s_0$.
+2.  Calculate the value $s_0 = s(\Graph, Y)$.
 
-\end{enumerate}
+3.  Now, for $b \in \{1, \dots, B\}$ do:
+    
+    1.  For each group $j$ in $\{1, \dots, J\}$, draw a new network $\graph_j^b\sim\mathcal{D}(\hat{\theta}, X_j)$, this new sequence is denoted $\Graph^b$
+    
+  	2.  Using $\Graph^b$ and $Y$, calculate $s_b = s(\Graph^b, Y)$
+  	
+  	3.  Next $b$.
 
-\alert{Note} An important distinction to make is that structures that gave origin to the graph need not to be relevant for the team's performance \textit{per se}.
+This will generate a null distribution for the statistic $s$, which we can use to compare against the observed statistic, $s_0$.
+
+\alert{Note} An important distinction to make is that structures that gave origin to the graph need not to be relevant for the team's performance *per se*.
 					
 ## Illustrated example
 
@@ -275,4 +325,18 @@ Suppose that we have a 3 networks of sizes 4, 4, and 5 respectively. The
 
 \normalsize
 
-The generated sequence of statistics $\{s_1, \dots, s_B\}$ 
+We can use the distribution of the sequence $\{s_1, \dots, s_B\}$ as null to compare against $s_0$
+
+# Part III: An empirical example
+
+## Small teams performance
+
+## Data
+
+## Results
+
+## Concluding remarks
+
+## Thanks!
+
+\maketitle
