@@ -1,9 +1,11 @@
 ---
-title: "Big Problems for Small Networks: Statistical Analysis of Small Networks and Team Performance"
+title: "Big Problems for \\color{USCCardinal} Small Networks\\color{black}: Statistical Analysis of Small Networks and Team Performance"
 author:
-  - "\\textbf{George G Vega Yon}"
+  - "\\textbf{George G Vega Yon}\\footnote{Contact: \\url{vegayon@usc.edu}. We thank members of our MURI research team, USC's Center for Applied Network Analysis, Andrew Slaughter, and attendees of the NASN 2018 conference for their comments.}"
   - Kayla de la Haye
 date: "SONIC Speaker\\linebreak[4]March 12, 2019"
+institute:
+  - "\\includegraphics[width=.15\\linewidth]{usc.pdf}\\linebreak[4]\\normalsize Department of Preventive Medicine"
 output:
   beamer_presentation:
     keep_tex: true
@@ -13,6 +15,10 @@ fontsize: 10pt
 aspectratio: 169
 bibliography: bibliography.bib
 ---
+
+## Contents
+
+\tableofcontents
 
 ## Funding Acknowledgement
 
@@ -75,7 +81,7 @@ How can we explain what we see here?
 		\kappa\left(\params, \Indepvar\right)
 	},\quad\forall \graph\in\GRAPH\label{eq:ergm}
 \end{equation}
-Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\Graph}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.
+Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.
 \item Overall, an ERGM identifies the set of parameters $\params$ that maximize the likelihood of observing a given graph $\graph$ over the entire set of possible networks, $\GRAPH$,
 \item In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$, terms.
 \item See Wasserman, Pattison, Robins, Snijders, Handcock and others.
@@ -149,7 +155,7 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 ## Estimation of ERGMs
 
 
-- Calculating of the normalizing constant in \eqref{eq:ergm} makes ERGMs difficult to estimate.
+- Calculating of the normalizing constant in \eqref{eq:ergm}, $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$, makes ERGMs difficult to estimate.
 
 - For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.
 
@@ -166,7 +172,29 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 
 - More importantly, in the case that a common data generating process can be assumed, a pooled version of the ERGMs can be estimated.
 
-- We have implemented  this and more in the `ergmito` R package (\url{https://github.com/muriteams/ergmito})
+$$
+\Prcond{\Graph_1 = \graph_1, \dots, \Graph_p = \graph_p}{\params, \Indepvar_1, \dots, \Indepvar_p} = \prod_p\frac{%
+		\exp{\transpose{\params}\sufstats{\graph_p, \Indepvar_p}}%	
+	}{
+		\kappa_p\left(\params, \Indepvar_p\right)
+	}
+$$
+
+- We have implemented  this and more in the `ergmito` (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package (\url{https://github.com/muriteams/ergmito})
+
+## Features of `ergmito`
+
+This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package has the following features
+
+- Built on top of [**statnet**](https://statnet.org)'s [`ergm`](https://github.com/statnet/ergm) R package.
+
+- Allows estimating ERGMs for small networks (less than 7 and perhaps 6)[^whyupto6] via MLE.
+
+- Implements pooled ERGM models.
+
+- In the same spirit of the exhaustive enumeration, includes a simulation function for small networks sampling from the true distribution. 
+
+[^whyupto6]: A directed graph of size 6 has 1,073,741,824
 
 ## Simulation Study
 			
@@ -175,12 +203,11 @@ We conducted a simulation study to explore the properties of MLE for small netwo
 
 1. Draw the population parameters from a piecewise Uniform with values in $[-4, -.1]\cup[.1, 4]$
 
-2. We will draw groups of sizes 3 to 4. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).
+2. We will draw groups of sizes 3 to 5. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).
 
 3. Use the drawn parameters and group sizes to generate random graphs using an ERGM data generating process.
 
-
-  We simulated 100,000 samples, each one composed of an average of 30 networks.			
+  We simulated 100,000 samples, each one composed of an average of 30 networks.
 			
 ## Simulation Study (cont'd)
 
@@ -234,7 +261,18 @@ Two common approaches: Generalized Linear Models (GLMs), or Mantel-like tests (a
 
 \alert{Note} An important distinction to make is that structures that gave origin to the graph need not to be relevant for the team's performance \textit{per se}.
 					
-## Fancy
+## Illustrated example
 
+Suppose that we have a 3 networks of sizes 4, 4, and 5 respectively. The 
+
+\footnotesize
+
+\def\svgwidth{.8\linewidth}
+\begin{figure}
+\centering
 \input{fig/struct-test.pdf_tex}
+\end{figure}
 
+\normalsize
+
+The generated sequence of statistics $\{s_1, \dots, s_B\}$ 
