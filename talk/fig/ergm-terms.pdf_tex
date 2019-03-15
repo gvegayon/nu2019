@@ -54,14 +54,14 @@
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{ergm-terms.pdf}}%
-    \put(0.79513704,0.91539605){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Transitive Triad\\$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$\\\\\end{tabular}}}}%
+    \put(0.3196315,0.9243448){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0.2}\smash{\begin{tabular}[t]{l}\begin{minipage}[c][][c]{.3\linewidth}\raggedright Transitive Triad $\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$\end{minipage}\\\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{ergm-terms.pdf}}%
-    \put(0.79852938,1.15588812){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Mutual Ties \\$\sum_{i\neq j}y_{ij}y_{ji}$\\\\\end{tabular}}}}%
+    \put(0.3196315,1.12475425){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0.2}\smash{\begin{tabular}[t]{l}\begin{minipage}[c][][c]{.3\linewidth}\raggedright Mutual Ties $\sum_{i\neq j}y_{ij}y_{ji}$\end{minipage}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{ergm-terms.pdf}}%
-    \put(0.79852938,0.69093698){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Homophily\\$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$\\\\\end{tabular}}}}%
+    \put(0.3196315,0.64377137){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0.2}\smash{\begin{tabular}[t]{l}\begin{minipage}[c][][c]{.3\linewidth}\raggedright Homophily $\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$\end{minipage}\\\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{ergm-terms.pdf}}%
-    \put(0.79301815,0.47449418){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Covariate Effect for Incoming Ties\\$\sum_{i\neq j}y_{ij}x_j$\\\\\end{tabular}}}}%
+    \put(0.3196315,0.44336204){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0.2}\smash{\begin{tabular}[t]{l}\begin{minipage}[c][][c]{.3\linewidth}\raggedright Covariate Effect for Incoming Ties $\sum_{i\neq j}y_{ij}x_j$\end{minipage}\\\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{ergm-terms.pdf}}%
-    \put(0.80409545,0.17388157){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{0.19999999}\smash{\begin{tabular}[t]{c}Four Cycle\\$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$\\\\\end{tabular}}}}%
+    \put(0.3196315,0.14274781){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0.2}\smash{\begin{tabular}[t]{l}\begin{minipage}[c][][c]{.3\linewidth}\raggedright Four Cycle $\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$\end{minipage}\end{tabular}}}}%
   \end{picture}%
 \endgroup%

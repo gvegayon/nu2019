@@ -286,10 +286,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="236.85922"
-     inkscape:cy="232.73191"
+     inkscape:cx="301.60472"
+     inkscape:cy="99.731445"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g8477-9"
      showgrid="true"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-midpoints="true"
@@ -297,7 +297,8 @@
      inkscape:window-height="1056"
      inkscape:window-x="65"
      inkscape:window-y="24"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     inkscape:bbox-nodes="true">
     <inkscape:grid
        type="xygrid"
        id="grid7550"
@@ -321,52 +322,47 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-5.359241,-112.39649)">
-    <circle
-       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke"
-       id="path10-8-5-6"
-       cx="9.260416"
-       cy="117.08334"
-       r="2.4504657" />
-    <circle
-       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke"
-       id="path10-4-9-1-0"
-       cx="19.84375"
-       cy="117.08334"
-       r="2.4504657" />
-    <path
-       inkscape:connection-start="#path10-8-5-6"
-       inkscape:connection-end="#path10-4-9-1-0"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker7042);marker-end:url(#Arrow2Lend-8)"
-       d="m 11.710882,117.08334 h 5.682402"
-       id="path4535-3-1-4"
-       inkscape:connector-curvature="0"
-       inkscape:connector-type="polyline" />
+    <g
+       id="g212">
+      <circle
+         r="2.4504657"
+         cy="117.08334"
+         cx="9.260416"
+         id="path10-8-5-6"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke" />
+      <circle
+         r="2.4504657"
+         cy="117.08334"
+         cx="19.84375"
+         id="path10-4-9-1-0"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke" />
+      <path
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         id="path4535-3-1-4"
+         d="m 11.710882,117.08334 h 5.682402"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker7042);marker-end:url(#Arrow2Lend-8)"
+         inkscape:connection-end="#path10-4-9-1-0"
+         inkscape:connection-start="#path10-8-5-6" />
+    </g>
     <text
        id="text7554"
-       y="132.26057"
-       x="57.846779"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:20.0000003%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       y="131.66986"
+       x="26.458334"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:20.0000003%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         id="tspan7564"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="132.26057"
-         x="57.846779"
-         sodipodi:role="line">Transitive Triad</tspan><tspan
-         id="tspan7568"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="135.50447"
-         x="57.846779"
-         sodipodi:role="line">$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$</tspan><tspan
-         id="tspan7558"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="138.74838"
-         x="57.846779"
-         sodipodi:role="line" /><tspan
-         id="tspan7556"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="140.86505"
-         x="57.846779"
-         sodipodi:role="line" /></text>
+         sodipodi:role="line"
+         id="tspan125"
+         x="26.458334"
+         y="131.66986">\begin{minipage}[c][][c]{.3\linewidth}\raggedright Transitive Triad $\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$\end{minipage}</tspan><tspan
+         sodipodi:role="line"
+         id="tspan127"
+         x="26.458334"
+         y="132.37541"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan129"
+         x="26.458334"
+         y="133.08098"></tspan></text>
     <g
        transform="translate(28.506664,32.964646)"
        id="g8477">
@@ -415,76 +411,55 @@
     </g>
     <text
        id="text7554-7"
-       y="116.38553"
-       x="58.070709"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:20.0000003%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       y="118.4407"
+       x="26.458334"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:20.0000003%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         id="tspan7564-8"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="116.38553"
-         x="58.070709"
-         sodipodi:role="line">Mutual Ties </tspan><tspan
-         id="tspan7568-5"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="119.62943"
-         x="58.070709"
-         sodipodi:role="line">$\sum_{i\neq j}y_{ij}y_{ji}$</tspan><tspan
-         id="tspan7558-3"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="122.87333"
-         x="58.070709"
-         sodipodi:role="line" /><tspan
-         id="tspan7556-3"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="124.99"
-         x="58.070709"
-         sodipodi:role="line" /></text>
-    <circle
-       style="opacity:1;fill:#646464;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke"
-       id="path10-8-5-6-3"
-       cx="9.260417"
-       cy="148.83334"
-       r="2.4504657" />
-    <circle
-       style="opacity:1;fill:#646464;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke"
-       id="path10-4-9-1-0-78"
-       cx="19.84375"
-       cy="148.83334"
-       r="2.4504657" />
-    <path
-       inkscape:connection-start="#path10-8-5-6-3"
-       inkscape:connection-end="#path10-4-9-1-0-78"
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-8-7)"
-       d="m 11.710883,148.83334 h 5.682401"
-       id="path4535-3-1-4-7"
-       inkscape:connector-curvature="0"
-       inkscape:connector-type="polyline" />
+         sodipodi:role="line"
+         id="tspan149"
+         x="26.458334"
+         y="118.4407">\begin{minipage}[c][][c]{.3\linewidth}\raggedright Mutual Ties $\sum_{i\neq j}y_{ij}y_{ji}$\end{minipage}</tspan></text>
+    <g
+       id="g390">
+      <circle
+         r="2.4504657"
+         cy="148.83334"
+         cx="9.260417"
+         id="path10-8-5-6-3"
+         style="opacity:1;fill:#646464;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke" />
+      <circle
+         r="2.4504657"
+         cy="148.83334"
+         cx="19.84375"
+         id="path10-4-9-1-0-78"
+         style="opacity:1;fill:#646464;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke" />
+      <path
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         id="path4535-3-1-4-7"
+         d="m 11.710883,148.83334 h 5.682401"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2Lend-8-7)"
+         inkscape:connection-end="#path10-4-9-1-0-78"
+         inkscape:connection-start="#path10-8-5-6-3" />
+    </g>
     <text
        id="text7554-7-4"
-       y="147.07727"
-       x="58.070709"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:20.0000003%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       y="150.1907"
+       x="26.458334"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:20.0000003%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         id="tspan7564-8-1"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="147.07727"
-         x="58.070709"
-         sodipodi:role="line">Homophily</tspan><tspan
-         id="tspan7568-5-9"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="150.32117"
-         x="58.070709"
-         sodipodi:role="line">$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$</tspan><tspan
-         id="tspan7558-3-0"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="153.56508"
-         x="58.070709"
-         sodipodi:role="line" /><tspan
-         id="tspan7556-3-9"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="155.68175"
-         x="58.070709"
-         sodipodi:role="line" /></text>
+         sodipodi:role="line"
+         id="tspan131"
+         x="26.458334"
+         y="150.1907">\begin{minipage}[c][][c]{.3\linewidth}\raggedright Homophily $\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$\end{minipage}</tspan><tspan
+         sodipodi:role="line"
+         id="tspan133"
+         x="26.458334"
+         y="150.89626"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan135"
+         x="26.458334"
+         y="151.60182"></tspan></text>
     <rect
        y="112.39649"
        x="5.3592415"
@@ -506,7 +481,7 @@
          cy="103.16731"
          cx="-8.974761"
          id="path10-4-9-1-0-7-0"
-         style="opacity:1;fill:#646464;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke" />
+         style="opacity:1;fill:#990000;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.09906882;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke" />
       <path
          inkscape:connector-type="polyline"
          inkscape:connector-curvature="0"
@@ -532,30 +507,22 @@
     </g>
     <text
        id="text7554-7-4-5"
-       y="161.36481"
-       x="57.706909"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:20.0000003%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       y="163.41986"
+       x="26.458334"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:20.0000003%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         id="tspan7564-8-1-9"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="161.36481"
-         x="57.706909"
-         sodipodi:role="line">Covariate Effect for Incoming Ties</tspan><tspan
-         id="tspan7568-5-9-9"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="164.6087"
-         x="57.706909"
-         sodipodi:role="line">$\sum_{i\neq j}y_{ij}x_j$</tspan><tspan
-         id="tspan7558-3-0-1"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="167.85262"
-         x="57.706909"
-         sodipodi:role="line" /><tspan
-         id="tspan7556-3-9-4"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="169.96928"
-         x="57.706909"
-         sodipodi:role="line" /></text>
+         sodipodi:role="line"
+         id="tspan137"
+         x="26.458334"
+         y="163.41986">\begin{minipage}[c][][c]{.3\linewidth}\raggedright Covariate Effect for Incoming Ties $\sum_{i\neq j}y_{ij}x_j$\end{minipage}</tspan><tspan
+         sodipodi:role="line"
+         id="tspan139"
+         x="26.458334"
+         y="164.12541"></tspan><tspan
+         sodipodi:role="line"
+         id="tspan141"
+         x="26.458334"
+         y="164.83098"></tspan></text>
     <g
        transform="translate(29.634213,84.558401)"
        id="g8477-7">
@@ -618,29 +585,13 @@
     </g>
     <text
        id="text7554-7-4-5-2"
-       y="181.20845"
-       x="58.438129"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:20.0000003%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       y="183.26361"
+       x="26.458334"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:20.0000003%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         id="tspan7564-8-1-9-1"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="181.20845"
-         x="58.438129"
-         sodipodi:role="line">Four Cycle</tspan><tspan
-         id="tspan7568-5-9-9-2"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="184.45235"
-         x="58.438129"
-         sodipodi:role="line">$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$</tspan><tspan
-         id="tspan7558-3-0-1-0"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="187.69626"
-         x="58.438129"
-         sodipodi:role="line" /><tspan
-         id="tspan7556-3-9-4-7"
-         style="font-size:3.52777767px;line-height:20.0000003%;text-align:start;text-anchor:start;stroke-width:0.26458332px"
-         y="189.81293"
-         x="58.438129"
-         sodipodi:role="line" /></text>
+         sodipodi:role="line"
+         id="tspan151"
+         x="26.458334"
+         y="183.26361">\begin{minipage}[c][][c]{.3\linewidth}\raggedright Four Cycle $\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$\end{minipage}</tspan></text>
   </g>
 </svg>

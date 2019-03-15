@@ -11,7 +11,7 @@ output:
     keep_tex: true
     includes:
       in_header: ergmitos-header.tex
-classoption: handout
+# classoption: handout
 fontsize: 10pt
 aspectratio: 169
 bibliography: bibliography.bib
@@ -72,19 +72,17 @@ We thank members of our MURI research team, USC's Center for Applied Network Ana
 
 # Part I: Exponential Random Graph Models for Small Networks
 
-## Exponential Random Graph Models
+## Exponential Random Graph Models (ERGMs)
 
 \begin{figure}
 \centering
 \includegraphics[height=.7\textheight]{ukfaculty-igraph.png}
-\caption{Friendship network of a UK university faculty. Source: \texttt{igraphdata} R package (Gabor Csardi, 2015)}
-\end{figure}
+\caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Gabor Csardi, 2015). Figure drawn using the R package \textbf{netplot} ( (https://github.com/usccana/netplot)}
+\end{figure}\pause
 
-How can we explain what we see here?
+\large How can we explain what we see here? \normalsize
 
-## ERGMs {fragile=true}
-
-- The \emph{lingua franca} of social network analysis.\pause
+## ERGMs... the \textit{lingua franca} of SNA
 
 - Seeks to answer the question: \emph{What local social structures gave origin to a given observed graph?}\pause
 
@@ -100,8 +98,6 @@ How can we explain what we see here?
   
   Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.\pause
   
-- Overall, an ERGM identifies the set of parameters $\params$ that maximize the likelihood of observing a given graph $\graph$ over the entire set of possible networks, $\GRAPH$,\pause
-
 - In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$, terms.\pause
 
 - See Wasserman, Pattison, Robins, Snijders, Handcock and others.
@@ -109,10 +105,18 @@ How can we explain what we see here?
 
 ## Structures
 
+\def\fig1width{.45\linewidth}
 \begin{figure}
 \centering
-\def\svgwidth{.4\linewidth}
-\input{fig/ergm-terms.pdf_tex}
+\begin{tabular}{m{.2\linewidth}<\centering m{.4\linewidth}<\raggedright}
+\toprule Representation & Description  \\ \midrule
+\includegraphics[width=\fig1width]{terms/mutual.pdf} & Mutual Ties (Reciprocity)\linebreak[4]$\sum_{i\neq j}y_{ij}y_{ji}$  \\
+\includegraphics[width=\fig1width]{terms/ttriad.pdf} & Transitive Triad (Balance)\linebreak[4]$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$  \\
+\includegraphics[width=\fig1width]{terms/homophily.pdf} & Homophily\linebreak[4]$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$ \\
+\includegraphics[width=\fig1width]{terms/nodeicov.pdf} & Covariate Effect for Incoming Ties\linebreak[4]$\sum_{i\neq j}y_{ij}x_j$ \\
+\includegraphics[width=\fig1width]{terms/fourcycle.pdf} & Four Cycle\linebreak[4]$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$  \\
+\bottomrule
+\end{tabular}
 \caption{\label{fig:ergm-structs}Besides of the common edge count statistic (number of ties in a graph), ERGMs allow measuring other more complex structures that can be captured as sufficient statistics. }
 \end{figure}
 
@@ -127,15 +131,13 @@ How can we explain what we see here?
 
 In this network\linebreak
 
-```{r simple-model, echo=FALSE, cache=TRUE, fig.align='center', fig.width=8, fig.height=5, out.width='.9\\linewidth'}
+```{r simple-model, echo=FALSE, cache=TRUE, fig.align='center', fig.width=8, fig.height=5, out.width='.9\\linewidth', warning=FALSE, message=FALSE}
 set.seed(13)
 # x <- ergmito::rbernoulli(4)
 x <- structure(c(0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0), .Dim = c(4L, 
 4L))
-netplot::nplot(
-  igraph::graph_from_adjacency_matrix(x), vertex.color = "gray60", edge.curvature = 0,
-  edge.color = ~ego + alter, edge.arrow.size=.07, edge.arrow.color="black",
-  vertex.size=3)
+library(sna)
+gplot(x, vertex.col = rgb(153, 0, 0, maxColorValue = 255))
 ```
 
 \pause
@@ -150,10 +152,14 @@ We see 4 **edges**, 1 **transitive triad** and **no mutual ties**.
 
 The probability function of this model would be
 
+\footnotesize
+
 \begin{equation*}
-\Prcond{\Graph = \graph}{\theta} = \frac{\exp{4\theta_{edges} + \theta_{ttriads}}}{%
+\Prcond{\Graph = \graph}{\theta} = \frac{\exp{4\theta_{edges} + \theta_{ttriads} \textcolor{lightgray}{+ 0\theta_{mutual}}}}{%
 \sum_{\graph'\in\GRAPH} \exp{\transpose{\theta} \sufstats{\graph'}}}
 \end{equation*}
+
+\normalsize
 
 \noindent with $\theta = \transpose{[\theta_{edges}\quad \theta_{ttriads} \quad \theta_{mutual}]}$
 
@@ -175,13 +181,38 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 ## Estimation of ERGMs
 
 
-- Calculating of the normalizing constant in \eqref{eq:ergm}, $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$, makes ERGMs difficult to estimate.\pause
+- Calculating of the normalizing constant in \eqref{eq:ergm}, $\kappa = \sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$, makes ERGMs difficult to estimate.\pause
 
-- For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.\pause
+- For this reason, statistical methods have focused on avoiding the direct calculation of $\kappa$; most modern methods for estimating ERGMs rely on MCMC.
+
+
+## Estimation of ERGMs (cont'd) {.t}
+
+Description of the MCMC-MLE algorithm (one of the approaches)
+
+1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
+
+2.  While the algorithm doesn't converge, do:
+    
+    a.  Generate a large sample of graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using MCMC
+    
+    b.  Use the simulated sample of graphs to approximate the likelihood function. And with this approximation update the parameter $\theta_0$ using a Newton-Raphson step.
+    
+    c.  next iteration\pause
+    
+    Once it coverges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\pause The variance approximation is another story.
+    
+
+---
 
 - While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy}.\pause
 
 - Model degeneracy is particularly problematic with small networks.
+
+\begin{figure}
+\centering
+\caption{Model generacy. Figure}
+\end{figure}
 
 ## ERGMs for Small Networks
 
@@ -209,7 +240,7 @@ $$
 
 How different is this from the "normal" way to fit ERGMs?
 
-## Estimation of ERGM\only<2>{\textcolor{USCCardinal}{ito}}s (cont'd)
+## Estimation of ERGM\only<2>{\textcolor{USCCardinal}{ito}}s (cont'd) {.t}
 
 Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm (one of the approaches)
 
@@ -217,7 +248,7 @@ Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{M
 
 2.  While the algorithm doesn't converge, do:
     
-    a.  \textcolor<2->{lightgray}{Simulate $B$ graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using an important sampler}
+    a.  \textcolor<2->{lightgray}{Simulate $B$ graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using MCMC}
     
     b.  \textcolor<2->{lightgray}{Use the simulated sequence of graphs to approximate the likelihood function. And with this approximation} \textcolor<2->{USCCardinal}{update the parameter $\theta_0$ using a Newton-Raphson step}.
     
@@ -233,13 +264,12 @@ By skiping the MCMC part we:
 
 We have implemented  this and more in the `ergmito` R package
 
-
 ---
 
 An important pause...
 
 \begin{minipage}[c]{1\linewidth}
-\large \textbf{ito, ita}: Suffix in spanish used to denote small. e.g.:
+\large \textbf{ito, ita}: From the latin -\textit{\=ittus}. suffix in spanish used to denote small or affection. e.g.:
 
 \hspace{.5cm} \textit{¡Que lindo ese perr\textcolor{USCCardinal}{\textbf{ito}}!} / \textit{What a beautiful little dog!}
 
@@ -278,13 +308,19 @@ data(fivenets, package = "ergmito")
 library(sna)
 library(network)
 op <- par(mfrow = c(2, 3), mai=rep(0, 4), oma = rep(0, 4))
+USCCARDINAL <- rgb(153, 0, 0, maxColorValue = 255)
 ans <- lapply(fivenets, function(f) {
-  gplot(f, vertex.col = get.vertex.attribute(f, "female"), vertex.cex = 2)
-  # box()
+  gplot(
+    f,
+    vertex.cex = 2,
+    vertex.col = c("white", USCCARDINAL)[
+      get.vertex.attribute(f, "female") + 1
+    ]
+    )
   })
 plot.new()
 plot.window(xlim = c(0, 1), ylim = c(0, 1))
-legend("center", fill = 0:1, legend = c("Male", "Female"), cex=1, bty="n")
+legend("center", fill = c("white", USCCARDINAL), legend = c("Male", "Female"), cex=1, bty="n")
 par(op)
 ```
 
