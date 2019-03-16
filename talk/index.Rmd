@@ -11,9 +11,11 @@ output:
     keep_tex: true
     includes:
       in_header: ergmitos-header.tex
-# classoption: handout
+classoption: handout
 fontsize: 10pt
 aspectratio: 169
+nocite: |
+  @Csardi2015, @knitr, @rmarkdown, @R, @Handcock2006, @Wasserman1996
 bibliography: bibliography.bib
 ---
 
@@ -69,6 +71,9 @@ We thank members of our MURI research team, USC's Center for Applied Network Ana
 \includegraphics[width=1\linewidth]{muriteams.png}
 \end{figure}
 
+## Research Problem
+
+
 
 # Part I: Exponential Random Graph Models for Small Networks
 
@@ -77,7 +82,7 @@ We thank members of our MURI research team, USC's Center for Applied Network Ana
 \begin{figure}
 \centering
 \includegraphics[height=.7\textheight]{ukfaculty-igraph.png}
-\caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Gabor Csardi, 2015). Figure drawn using the R package \textbf{netplot} ( (https://github.com/usccana/netplot)}
+\caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Csardi, 2015). Figure drawn using the R package \textbf{netplot} ( (https://github.com/usccana/netplot)}
 \end{figure}\pause
 
 \large How can we explain what we see here? \normalsize
@@ -188,31 +193,38 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 
 ## Estimation of ERGMs (cont'd) {.t}
 
-Description of the MCMC-MLE algorithm (one of the approaches)
+Description of the MCMC-MLE algorithm [@Geyer1992] \pause
 
-1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
+1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$ \pause
 
-2.  While the algorithm doesn't converge, do:
+2.  While the algorithm doesn't converge, do: \pause
     
-    a.  Generate a large sample of graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using MCMC
+    a.  Generate a large sample of graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using MCMC \pause
     
-    b.  Use the simulated sample of graphs to approximate the likelihood function. And with this approximation update the parameter $\theta_0$ using a Newton-Raphson step.
+    b.  Use the simulated sample of graphs to approximate the likelihood function. And with this approximation update the parameter $\theta_0$ using a Newton-Raphson step. \pause
     
-    c.  next iteration\pause
+    c.  next iteration\pause 
     
-    Once it coverges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\pause The variance approximation is another story.
+Once it coverges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\pause The variance approximation is another story.
     
 
 ---
 
-- While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy}.\pause
+\footnotesize
 
-- Model degeneracy is particularly problematic with small networks.
+- While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy} [@Handcock2003].\pause
+
+- This occurs when the model parameters \textit{live in a degenerate region}. This impacts directly the MCMC process yielding poor mixing\pause
 
 \begin{figure}
 \centering
-\caption{Model generacy. Figure}
-\end{figure}
+\includegraphics[height=.6\textheight]{handcock2003-figure5.pdf}
+\caption{Model degeneracy. Figure 5 in Handcock (2003)}
+\end{figure}\pause
+
+- Model degeneracy is particularly problematic with small networks... (says anyone who has tried to fit one).
+
+\normalsize
 
 ## ERGMs for Small Networks
 
@@ -227,7 +239,7 @@ Description of the MCMC-MLE algorithm (one of the approaches)
 
 - This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimizations techniques.\pause
 
-- More importantly, in the case that a common data generating process can be assumed, a pooled version of the ERGMs can be estimated.
+- In addition, if a common data generating process can be assumed, a pooled version of the ERGMs can be estimated easily:\pause
 
 $$
 \Prcond{\Graph_1 = \graph_1, \dots, \Graph_p = \graph_p}{\params, \Indepvar_1, \dots, \Indepvar_p} = \prod_p\frac{%
@@ -240,9 +252,9 @@ $$
 
 How different is this from the "normal" way to fit ERGMs?
 
-## Estimation of ERGM\only<2>{\textcolor{USCCardinal}{ito}}s (cont'd) {.t}
+## Estimation of ERGM\only<2->{\textcolor{USCCardinal}{ito}}s (cont'd) {.t}
 
-Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm (one of the approaches)
+Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm [@Geyer1992]
 
 1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
 
@@ -252,13 +264,13 @@ Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{M
     
     b.  \textcolor<2->{lightgray}{Use the simulated sequence of graphs to approximate the likelihood function. And with this approximation} \textcolor<2->{USCCardinal}{update the parameter $\theta_0$ using a Newton-Raphson step}.
     
-    c.  next iteration\pause
-    
-By skiping the MCMC part we:
+    c.  next iteration\pause\pause
 
-1.  are able to get MLE estiamates directly,
+By skiping the MCMC part we:\pause
 
-2.  *avoiding the degeneracy problem* latent in MCMC, and
+1.  are able to get MLE estiamates directly,\pause
+
+2.  *avoiding the degeneracy problem* latent in MCMC, and\pause
 
 3.  obtain *more accurate* estimates *faster*. \pause
 
@@ -285,7 +297,7 @@ An important pause...
 
 This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R package has the following features\pause
 
-- Built on top of [**statnet**](https://statnet.org)'s [`ergm`](https://github.com/statnet/ergm) R package.\pause
+- Built on top of [**statnet**](https://statnet.org)'s [`ergm`](https://github.com/statnet/ergm) R package [@hunter2008; @Handcock2018].\pause
 
 - Allows estimating ERGMs for small networks (less than 7 and perhaps 6)[^whyupto6] via MLE.\pause
 
@@ -370,46 +382,93 @@ We simulated 100,000 samples, each one composed of an average of 30 networks.
 \caption{Empirical power of Pooled-ERGM estimates at various levels of effect size. As expected, power increases significantly with sample size (\# of networks per sample). Interestingly, the discovery rate of an effect size within $[1, 2)$ is very high even with a sample size of 20-30 networks. More extreme points have higher volatility due to small number of samples included.}
 \end{figure}
 
+## Preliminary results
+
+\small
+
+\begin{table}
+\begin{center}
+\begin{tabular}{l c c c }
+\toprule
+ & nodeicov(RME) & nodeocov(Female) & RME+Female \\
+\midrule
+Edges             & $-1.22^{***}$ & $-0.82^{***}$ & $-1.64^{***}$ \\
+                  & $(0.20)$      & $(0.16)$      & $(0.25)$      \\
+Transitive Triads & $0.23^{***}$  & $0.24^{***}$  & $0.24^{***}$  \\
+                  & $(0.05)$      & $(0.05)$      & $(0.06)$      \\
+Indeg. RME        & $0.29^{***}$  &               & $0.35^{***}$  \\
+                  & $(0.07)$      &               & $(0.08)$      \\
+Outdeg. Female    &               & $0.45^{**}$   & $0.53^{**}$   \\
+                  &               & $(0.17)$      & $(0.18)$      \\
+\midrule
+AIC               & 772.98        & 711.79        & 693.08        \\
+BIC               & 786.06        & 724.59        & 710.14        \\
+Log Likelihood    & -383.49       & -352.90       & -342.54       \\
+\# Networks        & 41            & 38            & 38            \\
+\bottomrule
+\multicolumn{4}{l}{\scriptsize{$^{***}p<0.001$, $^{**}p<0.01$, $^*p<0.05$}}
+\end{tabular}
+\caption{Final set of specifications. The two statistics that showed the most invariant were \textbf{Indeg. RME} and \textbf{Outdeg. Female}. These two effects can be described as (1) individuals with high levels of RME receive more ties, and (2) female subjects were more likely of seeking advice than male. Other statistics such as GPA, religiousness, age, and ethnicity were not significant.}
+\label{tab:final2}
+\end{center}
+\end{table}
+
+
 # Part II: Association between group structure and team performance
 
 ## Testing effects of social network structure on group performance
 			
-Two common approaches: Generalized Linear Models (GLMs), or Mantel-like tests (a.k.a. permutation tests). Both have limitations:\pause
+Two common approaches: Generalized Linear Models (GLMs), or permutation-like tests. Both have limitations:\pause
 	
 - GLMs:\pause
     
     - Sample size is problematic: How costly is getting enough teams to run get a desired level of power?\pause
 
-- Permutation tests:\pause
+- Permutation-like tests:\pause
     
-    - Common approach: sample from graphs with the same degree sequence--the observed sequence of in/out degree\pause
-      
-    - This is oversimplifying/constraining\pause
+    - Permutation: shuffle the dependent variable and compute, for example, correlations.\pause{} \textcolor{USCCardinal}{\textbf{This assumes the outcome is completely detached from the observation.}}\pause
     
-    - And worse, in a network of size 4, how many different networks can be observed **holding the degree sequence fixed**?
+    - Rewiring [see @Milo2004]: Sample networks by generating new graphs using a rewiring algorithm, usually preserving some property such as degree sequence--the observed sequence of in/out degree.\pause \textcolor{USCCardinal}{\textbf{This assumes an oversimplifying data generating process.}}\pause{} And worse, in a network of size 4, how many different networks can be observed **holding the degree sequence fixed**?
+
+\pause BTW Degree sequence $\mapsto$ Scale-free networks
   
-## An idea
-
-- Lack of power:\pause What if we just simulate them?\pause OK, but aren't we doing this with permutation tests?...
-
-- Sure, but what about ERGMs?\pause Ultimately these models describe a distribution of graphs that have *on average* the same set of network statistics\pause
-
-- This overcomes the problem observed in permutation tests.
+---
 
 
-## A semiparametric test
-			
-**Notation**
+> \Huge"\normalsize The **structural diversity of real-world networks** uncovered here presents both a puzzle and an opportunity. The strong focus in the scientific literature on **explaining and exploiting scale-free patterns has meant relatively less is known about mechanisms that produce non-scale-free structural patterns**, e.g., those with degree distributions better fitted by a log-normal. Two important directions of future work will be the **development and validation of novel mechanisms for generating more realistic degree structure in networks**, and novel statistical techniques for identifying or untangling them given empirical data\Huge"\normalsize
 
-- $\Graph = \{\graph_j\}$ is a sequence of $J$ graphs that share a common data-generating-process, e.g. teams formed in a lab.
+\raggedleft
+-- **p. 8, @broido2019**
 
-- Each network has node-level attributes $x \in \mathcal{X}$.
+\raggedright
+See @Holme2019 for a recent reference on the Scale-free issue.
+  
+## An Idea
 
-- A group(graph) level outcome variable, such as team performance, $Y$.
+What about using ERGMs to generate null distributions?\pause
 
-- Under the null, network structure and group performance are not associated, this is $Y\perp\Graph$.
+- Even for small networks, we can generate thousands of unique graphs, so sample size is not a problem.\pause
+
+- As a difference from permutation tests:\pause
+    
+    - ERGMs provide a more meaningful/realistic (or comprehensive if you like) data generating process\pause
+      
+    - On average, sampled networks will **look like the original** graph (addressing @broido2019's comments).
 
 
+In principle, this would be equivalent to revise a rewiring test...
+
+<!-- ## A semiparametric test -->
+
+<!-- **Notation** -->
+
+<!-- - $\Graph = \{\graph_j\}$ is a sequence of $J$ graphs that share a common data-generating-process, e.g. teams formed in a lab. -->
+
+<!-- - Each network has node-level attributes $x \in \mathcal{X}$. -->
+
+<!-- - A group(graph) level outcome variable, such as team performance, $Y$. -->
+
+<!-- - Under the null, network structure and group performance are not associated, this is $Y\perp\Graph$. -->
 
 
 ## Algorithm
@@ -492,3 +551,5 @@ Test for Association between graph level outcomes and graph structures:\pause
 \includegraphics[width=.02\linewidth]{twitter.png}\href{https://twitter.com/gvegayon}{@gvegayon}
 
 \end{centering}
+
+## References {.allowframebreaks}
