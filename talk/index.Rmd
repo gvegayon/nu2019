@@ -354,8 +354,8 @@ The same as you would do with the `ergm` package:
 ```
 
 ```{r fit-fivenets-print, results='asis', echo=FALSE}
-out <- texreg::texreg(model1)
-cat(gsub("#", "\\#", unclass(out), fixed=TRUE))
+texreg::texreg(model1)
+# cat(gsub("#", "\\#", unclass(out), fixed=TRUE))
 ```
 
 
@@ -384,34 +384,35 @@ We simulated 100,000 samples, each one composed of an average of 30 networks.
 
 ## Preliminary results
 
-\small
+\footnotesize
 
-\begin{table}
-\begin{center}
-\begin{tabular}{l c c c }
-\toprule
- & nodeicov(RME) & nodeocov(Female) & RME+Female \\
-\midrule
-Edges             & $-1.22^{***}$ & $-0.82^{***}$ & $-1.64^{***}$ \\
-                  & $(0.20)$      & $(0.16)$      & $(0.25)$      \\
-Transitive Triads & $0.23^{***}$  & $0.24^{***}$  & $0.24^{***}$  \\
-                  & $(0.05)$      & $(0.05)$      & $(0.06)$      \\
-Indeg. RME        & $0.29^{***}$  &               & $0.35^{***}$  \\
-                  & $(0.07)$      &               & $(0.08)$      \\
-Outdeg. Female    &               & $0.45^{**}$   & $0.53^{**}$   \\
-                  &               & $(0.17)$      & $(0.18)$      \\
-\midrule
-AIC               & 772.98        & 711.79        & 693.08        \\
-BIC               & 786.06        & 724.59        & 710.14        \\
-Log Likelihood    & -383.49       & -352.90       & -342.54       \\
-\# Networks        & 41            & 38            & 38            \\
-\bottomrule
-\multicolumn{4}{l}{\scriptsize{$^{***}p<0.001$, $^{**}p<0.01$, $^*p<0.05$}}
-\end{tabular}
-\caption{Final set of specifications. The two statistics that showed the most invariant were \textbf{Indeg. RME} and \textbf{Outdeg. Female}. These two effects can be described as (1) individuals with high levels of RME receive more ties, and (2) female subjects were more likely of seeking advice than male. Other statistics such as GPA, religiousness, age, and ethnicity were not significant.}
-\label{tab:final2}
-\end{center}
-\end{table}
+```{r echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+
+library(ergmito)
+library(magrittr)
+library(texreg)
+
+influence  <- readRDS("ci-and-ergms-models/ergmito_final_influence.rds")
+leadership <- readRDS("ci-and-ergms-models/ergmito_final_leader.rds")
+advice     <- readRDS("ci-and-ergms-models/ergmito_final_advice.rds")
+
+# Subseting the models that Kayla presented in the Review
+list(
+  Advice     = advice$`RME+Female+SI3Fac1`,
+  Influence  = influence$`T. Triad`,
+  Leadership = leadership$Female
+) %>% 
+  texreg(
+    caption = paste(
+      "The two statistics that showed the most invariant were \\textbf{nodeicov.RME}",
+      "and \\textbf{nodeocov.Female}. These two effects can be described as (1)",
+      "individuals with high levels of RME receive more ties, and (2) female",
+      "subjects were more likely of seeking advice than male. Other statistics",
+      "such as GPA, religiousness, age, and ethnicity were not significant."
+      ))
+
+```
+
 
 
 # Part II: Association between group structure and team performance
@@ -470,6 +471,29 @@ In principle, this would be equivalent to revise a rewiring test...
 
 <!-- - Under the null, network structure and group performance are not associated, this is $Y\perp\Graph$. -->
 
+## An Idea (cont'd)
+
+-   Ideally, we would like to build a test statistic with the following hypothesis\pause
+    
+    $$
+    \underbrace{\Graph \perp \Depvar}_{\mbox{Null assumption}}
+    \implies \ExpectedCond{\Depvar}{\Graph = \graph} = 
+    \Expected{\Depvar}
+    $$\pause
+
+-   But this is not feasible without making strong distributional assumptions.\pause
+    
+-   Instead, we can take a look at the joint distribution of $(\Depvar, \Graph)$, and fix $\Depvar$ as follows:\pause
+    
+    \begin{align*}
+    \hphantom{\underbrace{\Graph \perp \Depvar}_{\mbox{Null hypothesis}}}
+    & \implies \ExpectedCond{s(\Graph, \Depvar)}{\Graph = \graph} = 
+    \Expected{s(\Graph, \Depvar)} \\
+    & \implies \underbrace{\ExpectedCond{s(\Graph, \Depvar)}{\Graph = \graph, \Depvar = \depvar}}_{\mbox{Observed statistic}} = 
+    \underbrace{\ExpectedCond{s(\Graph, \Depvar)}{\Depvar = \depvar}}_{Unobserved...}
+    \end{align*}\pause
+    
+    Under the null, we can generate approximate the distribution of $\ExpectedCond{s(\Graph, \Depvar)}{\Depvar = \depvar}$ by simulations, in particular, drawing samples of new graphs (ERGMs).
 
 ## Algorithm
 
