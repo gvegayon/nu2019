@@ -54,13 +54,13 @@
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0.00144395,0.08261584){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Fit the ERGMito, \\This will give us $\mathcal{D}(\hat\theta, X_j)$\end{tabular}}}}%
-    \put(0.66470898,0.08261584){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3.1) For $j \in \{1, 2, 3\}$ draw a\\new network from $\mathcal{D}$\\3.2) Use the new sample to \\calculate $s_b = s(\mathbf{G}^b, Y)$\end{tabular}}}}%
+    \put(0.66470898,0.08261584){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3.1) For $j \in \{1, 2, 3\}$ draw a\\new network from $\mathcal{D}$\\3.2) Use the new sample to \\calculate $t_b = t(\mathbf{G}^b, Y)$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{struct-test.pdf}}%
     \put(0.66595369,0.52954907){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Step 3}:\\For $b\in {1,\dots, B}$ do\end{tabular}}}}%
     \put(0.00138321,0.52954907){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Step 1}:\\Fit the ERGMito\end{tabular}}}}%
-    \put(0.31229332,0.52954907){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Step 2}:\\Calculate $s_0 = $\end{tabular}}}}%
+    \put(0.31229332,0.52954907){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Step 2}:\\Calculate $t_0 = $\end{tabular}}}}%
     \put(0.01909456,0.43208603){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathbf{G} = \{\mathbf{g}_1, \mathbf{g}_2, \mathbf{g}_3\}$\end{tabular}}}}%
     \put(0.7225288,0.39352592){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\mathbf{G}^b = \{\mathbf{g}_1^b, \mathbf{g}_2^b, \mathbf{g}_3^b\}$\end{tabular}}}}%
-    \put(0.31235406,0.37409408){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$s\left(\left[\begin{array}{c}\includegraphics[width=.02\linewidth]{g1.pdf}\\\\\includegraphics[width=.02\linewidth]{g2.pdf} \\\\\includegraphics[width=.02\linewidth]{g3.pdf}\\\end{array}\right], \left[\begin{array}{c}y_1\\\\y_2\\\\y_3\\\end{array}\right]\right)$\\\\Throughout the simulations\\the only part that changes is\\the networks, not $Y$\end{tabular}}}}%
+    \put(0.31235406,0.37409408){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$t\left(\left[\begin{array}{c}\includegraphics[width=.02\linewidth]{g1.pdf}\\\\\includegraphics[width=.02\linewidth]{g2.pdf} \\\\\includegraphics[width=.02\linewidth]{g3.pdf}\\\end{array}\right], \left[\begin{array}{c}y_1\\\\y_2\\\\y_3\\\end{array}\right]\right)$\\\\Throughout the simulations\\the only part that changes is\\the networks, not $Y$\end{tabular}}}}%
   \end{picture}%
 \endgroup%

@@ -11,7 +11,7 @@ output:
     keep_tex: true
     includes:
       in_header: ergmitos-header.tex
-classoption: handout
+# classoption: handout
 fontsize: 10pt
 aspectratio: 169
 nocite: |
@@ -29,10 +29,6 @@ knitr::knit_hooks$set(smallsize = function(before, options, envir) {
 })
 knitr::opts_chunk$set(echo = TRUE, smallsize=TRUE)
 ```
-
-## Contents
-
-\tableofcontents
 
 ## Acknowledgements
 
@@ -73,16 +69,43 @@ We thank members of our MURI research team, USC's Center for Applied Network Ana
 
 ## Research Problem
 
+In the context of network science of small teams:
+
+\pause
+
+\large
+\centering
+What characterizes the social networks that emerge from small teams?\pause
+
+Is there any association between how team networks are structured and their performance?\normalsize
+
+## Research Problem (cont'd)
+
+We are trying to answer these two questions with the following experimental data: \pause
+
+- 42 teams typically made of 4 to 5 mixed-gender teammates.\pause
+
+- Each team completed 1 hour of group tasks, in particular, a set of tasks to measure collective intelligence developed by MIT [@Kim2017].\pause
+
+- We surveyed team members to capture information regarding socio-demographics **and**:\pause
+    
+    - Social Intelligence (SI domains): Social Perception (measured by RME), Social Accomodation, Social Gregariousness, and Social Awareness\pause 
+    
+    - Social Networks: Advice Seeking, Leadership, Influence (among others).
 
 
-# Part I: Exponential Random Graph Models for Small Networks
+## Contents
+
+\tableofcontents
+
+# Part I: Network Structure
 
 ## Exponential Random Graph Models (ERGMs)
 
 \begin{figure}
 \centering
 \includegraphics[height=.7\textheight]{ukfaculty-igraph.png}
-\caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Csardi, 2015). Figure drawn using the R package \textbf{netplot} ( (https://github.com/usccana/netplot)}
+\caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Csardi, 2015). Figure drawn using the R package \textbf{netplot} (yours truly, https://github.com/usccana/netplot)}
 \end{figure}\pause
 
 \large How can we explain what we see here? \normalsize
@@ -101,9 +124,11 @@ We thank members of our MURI research team, USC's Center for Applied Network Ana
   	},\quad\forall \graph\in\GRAPH\label{eq:ergm}
   \end{equation}
   
-  Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.\pause
+  Where $\kappa\left(\params, \Indepvar\right)$ is the normalizing constant and equals $\sum_{\graph'\in\GRAPH}\exp{\transpose{\params}\sufstats{\graph', \Indepvar}}$. \pause
   
-- In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$, terms.\pause
+- The set of sufficient statistics reflects social and psychological mechanisms that are hypothesized to drive the network structure. Figure \autoref{fig:ergm-structs} shows some examples of values in $\sufstats{}$.\pause
+  
+- In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$ terms.\pause
 
 - See Wasserman, Pattison, Robins, Snijders, Handcock and others.
 
@@ -195,7 +220,7 @@ This model has **MLE parameter estimates** of `r estimates0_coefs[1]` (low densi
 
 Description of the MCMC-MLE algorithm [@Geyer1992] \pause
 
-1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$ \pause
+1.  Make an initial guess of the model parameters $\hat\theta_0$ \pause
 
 2.  While the algorithm doesn't converge, do: \pause
     
@@ -205,7 +230,7 @@ Description of the MCMC-MLE algorithm [@Geyer1992] \pause
     
     c.  next iteration\pause 
     
-Once it coverges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\pause The variance approximation is another story.
+Once it converges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\pause The variance approximation is another story.
     
 
 ---
@@ -235,19 +260,22 @@ Once it coverges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\pa
 
 ## ERGMs for Small Networks (cont'd)
 			
-- In the case of small networks (e.g. at most 6 nodes), the calculation of $\kappa$ becomes computationally feasible.\pause
+-   In the case of small networks (e.g. at most 6 nodes), the calculation of $\kappa$ becomes computationally feasible.\pause
 
-- This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimizations techniques.\pause
+-   This allows direct calculation of \eqref{eq:ergm}, \textbf{avoiding the need for simulations} and allowing us to obtain Maximum Likelihood Estimates using \textit{standard} optimization techniques.\pause
 
-- In addition, if a common data generating process can be assumed, a pooled version of the ERGMs can be estimated easily:\pause
+-   In addition, most of the time samples of small networks include multiple of them, e.g.: Families, Small teams (like our data), Ego-nets, etc.\pause
 
-$$
-\Prcond{\Graph_1 = \graph_1, \dots, \Graph_p = \graph_p}{\params, \Indepvar_1, \dots, \Indepvar_p} = \prod_p\frac{%
-		\exp{\transpose{\params}\sufstats{\graph_p, \Indepvar_p}}%	
-	}{
-		\kappa_p\left(\params, \Indepvar_p\right)
-	}
-$$ 
+-   This makes pooled ERGM estimates a natural way of modeling the data:\pause
+
+    $$
+    \Prcond{\Graph_1 = \graph_1, \dots, \Graph_p = \graph_p}{\params, \Indepvar_1, \dots, \Indepvar_p} = \prod_p\frac{%
+    		\exp{\transpose{\params}\sufstats{\graph_p, \Indepvar_p}}%	
+    	}{
+    		\kappa_p\left(\params, \Indepvar_p\right)
+    	}
+    $$ 
+
 \pause
 
 How different is this from the "normal" way to fit ERGMs?
@@ -256,7 +284,7 @@ How different is this from the "normal" way to fit ERGMs?
 
 Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm [@Geyer1992]
 
-1.  Make an initial guess of the model parameters using MPL (maximum pseudo likelihood), $\hat\theta_0$
+1.  Make an initial guess of the model parameters $\hat\theta_0$
 
 2.  While the algorithm doesn't converge, do:
     
@@ -266,22 +294,22 @@ Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{M
     
     c.  next iteration\pause\pause
 
-By skiping the MCMC part we:\pause
+By skipping the MCMC part we:\pause
 
-1.  are able to get MLE estiamates directly,\pause
+1.  are able to get MLE estimates directly,\pause
 
-2.  *avoiding the degeneracy problem* latent in MCMC, and\pause
+2.  *avoid the degeneracy problem* latent in MCMC, and\pause
 
-3.  obtain *more accurate* estimates *faster*. \pause
+3.  obtain *more accurate* (exact) estimates *faster*. \pause
 
 We have implemented  this and more in the `ergmito` R package
 
 ---
 
-An important pause...
+Sidetrack...
 
 \begin{minipage}[c]{1\linewidth}
-\large \textbf{ito, ita}: From the latin -\textit{\=ittus}. suffix in spanish used to denote small or affection. e.g.:
+\large \textbf{ito, ita}: From the latin -\textit{\=ittus}. suffix in Spanish used to denote small or affection. e.g.:
 
 \hspace{.5cm} \textit{¡Que lindo ese perr\textcolor{USCCardinal}{\textbf{ito}}!} / \textit{What a beautiful little dog!}
 
@@ -303,7 +331,7 @@ This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R
 
 - Implements pooled ERGM models.\pause
 
-- In the same spirit of the exhaustive enumeration, includes a simulation function for small networks sampling from the true distribution. 
+- Includes a simulation function for efficiently drawing samples of small networks, and by **effiently** we mean **fast**. 
 
 
 
@@ -311,12 +339,12 @@ This (\includegraphics[width=.1\linewidth]{lifecycle-experimental-orange.pdf}) R
 
 ## `ergmito` example
 
-```{r loading-fivenets}
+```{r loading-fivenets, cache=TRUE}
 library(ergmito)
 data(fivenets, package = "ergmito")
 ```
 
-```{r plotfivenets, warning=FALSE, message=FALSE, echo=FALSE, fig.width=6, fig.height=3, out.width='.5\\linewidth', fig.align='center'}
+```{r plotfivenets, warning=FALSE, message=FALSE, echo=FALSE, fig.width=6, fig.height=3, out.width='.5\\linewidth', fig.align='center', cache=TRUE}
 library(sna)
 library(network)
 op <- par(mfrow = c(2, 3), mai=rep(0, 4), oma = rep(0, 4))
@@ -338,7 +366,7 @@ par(op)
 
 ----
 
-```{r}
+```{r fivenets-1, cache=TRUE}
 # Looking at one of the five networks
 fivenets[[1]]
 ```
@@ -349,16 +377,14 @@ fivenets[[1]]
 
 The same as you would do with the `ergm` package:
 
-```{r fit-fivenets}
+```{r fit-fivenets, cache=TRUE}
 (model1 <- ergmito(fivenets ~ edges + nodematch("female")))
 ```
 
-```{r fit-fivenets-print, results='asis', echo=FALSE}
+```{r fit-fivenets-print, results='asis', echo=FALSE, cache=TRUE}
 texreg::texreg(model1)
 # cat(gsub("#", "\\#", unclass(out), fixed=TRUE))
 ```
-
-
 
 
 ## Simulation Study
@@ -382,11 +408,17 @@ We simulated 100,000 samples, each one composed of an average of 30 networks.
 \caption{Empirical power of Pooled-ERGM estimates at various levels of effect size. As expected, power increases significantly with sample size (\# of networks per sample). Interestingly, the discovery rate of an effect size within $[1, 2)$ is very high even with a sample size of 20-30 networks. More extreme points have higher volatility due to small number of samples included.}
 \end{figure}
 
+----
+
+\large So now that we can estimate ERGMs for small networks (cool!)...\pause{}
+
+\hspace{2cm}... what can this tell us about our 42 teams?
+
 ## Preliminary results
 
 \footnotesize
 
-```{r echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r preleminary-results, echo=FALSE, results='asis', warning=FALSE, message=FALSE, cache=TRUE}
 
 library(ergmito)
 library(magrittr)
@@ -404,18 +436,21 @@ list(
 ) %>% 
   texreg(
     caption = paste(
-      "The two statistics that showed the most invariant were \\textbf{nodeicov.RME}",
-      "and \\textbf{nodeocov.Female}. These two effects can be described as (1)",
+      "The two statistics that showed to be the most robust were \\textbf{Indeg. RME}",
+      "and \\textbf{Outdeg. Female}. These two effects can be described as (1)",
       "individuals with high levels of RME receive more ties, and (2) female",
       "subjects were more likely of seeking advice than male. Other statistics",
       "such as GPA, religiousness, age, and ethnicity were not significant."
-      ))
+      ),
+    custom.coef.names = c(
+      "Edges", "Transitive Triads", "Indeg. RME", "Outdeg. Female", "Outdeg. Social Accomodation", "Indeg. Female"
+    ))
 
 ```
 
 
 
-# Part II: Association between group structure and team performance
+# Part II: Association between network structure and team performance
 
 ## Testing effects of social network structure on group performance
 			
@@ -427,7 +462,7 @@ Two common approaches: Generalized Linear Models (GLMs), or permutation-like tes
 
 - Permutation-like tests:\pause
     
-    - Permutation: shuffle the dependent variable and compute, for example, correlations.\pause{} \textcolor{USCCardinal}{\textbf{This assumes the outcome is completely detached from the observation.}}\pause
+    - Permutation: shuffle the dependent variable and compute, for example, correlations.\pause{} \textcolor{USCCardinal}{\textbf{This assumes the outcome is completely independent from the observation.}}\pause
     
     - Rewiring [see @Milo2004]: Sample networks by generating new graphs using a rewiring algorithm, usually preserving some property such as degree sequence--the observed sequence of in/out degree.\pause \textcolor{USCCardinal}{\textbf{This assumes an oversimplifying data generating process.}}\pause{} And worse, in a network of size 4, how many different networks can be observed **holding the degree sequence fixed**?
 
@@ -454,10 +489,10 @@ What about using ERGMs to generate null distributions?\pause
     
     - ERGMs provide a more meaningful/realistic (or comprehensive if you like) data generating process\pause
       
-    - On average, sampled networks will **look like the original** graph (addressing @broido2019's comments).
+    - On average, sampled networks will **look like the original** graph (addressing @broido2019's comments).\pause
 
 
-In principle, this would be equivalent to revise a rewiring test...
+In principle, this would be equivalent to a revised rewiring test...
 
 <!-- ## A semiparametric test -->
 
@@ -471,45 +506,45 @@ In principle, this would be equivalent to revise a rewiring test...
 
 <!-- - Under the null, network structure and group performance are not associated, this is $Y\perp\Graph$. -->
 
-## An Idea (cont'd)
+<!-- ## An Idea (cont'd) -->
 
--   Ideally, we would like to build a test statistic with the following hypothesis\pause
-    
-    $$
-    \underbrace{\Graph \perp \Depvar}_{\mbox{Null assumption}}
-    \implies \ExpectedCond{\Depvar}{\Graph = \graph} = 
-    \Expected{\Depvar}
-    $$\pause
+<!-- -   Ideally, we would like to build a test with the following rationale\pause -->
 
--   But this is not feasible without making strong distributional assumptions.\pause
-    
--   Instead, we can take a look at the joint distribution of $(\Depvar, \Graph)$, and fix $\Depvar$ as follows:\pause
-    
-    \begin{align*}
-    \hphantom{\underbrace{\Graph \perp \Depvar}_{\mbox{Null hypothesis}}}
-    & \implies \ExpectedCond{s(\Graph, \Depvar)}{\Graph = \graph} = 
-    \Expected{s(\Graph, \Depvar)} \\
-    & \implies \underbrace{\ExpectedCond{s(\Graph, \Depvar)}{\Graph = \graph, \Depvar = \depvar}}_{\mbox{Observed statistic}} = 
-    \underbrace{\ExpectedCond{s(\Graph, \Depvar)}{\Depvar = \depvar}}_{Unobserved...}
-    \end{align*}\pause
-    
-    Under the null, we can generate approximate the distribution of $\ExpectedCond{s(\Graph, \Depvar)}{\Depvar = \depvar}$ by simulations, in particular, drawing samples of new graphs (ERGMs).
+<!--     $$ -->
+<!--     \underbrace{\Graph \perp \Depvar}_{\mbox{Null assumption}} -->
+<!--     \implies \ExpectedCond{\Depvar}{\Graph = \graph} =  -->
+<!--     \Expected{\Depvar} -->
+<!--     $$\pause -->
+
+<!-- -   But this is not feasible without making strong distributional assumptions.\pause -->
+
+<!-- -   Instead, we can take a look at the joint distribution of $(\Depvar, \Graph)$ conditioning on $\Depvar$ as follows:\pause -->
+
+<!--     \begin{align*} -->
+<!--     \hphantom{\underbrace{\Graph \perp \Depvar}_{\mbox{Null hypothesis}}} -->
+<!--     & \implies \ExpectedCond{s(\Graph, \Depvar)}{\Graph = \graph} =  -->
+<!--     \Expected{s(\Graph, \Depvar)} \\ -->
+<!--     & \implies \underbrace{\ExpectedCond{s(\Graph, \Depvar)}{\Graph = \graph, \Depvar = \depvar}}_{\mbox{Observed statistic}} =  -->
+<!--     \underbrace{\ExpectedCond{s(\Graph, \Depvar)}{\Depvar = \depvar}}_{Unobserved...} -->
+<!--     \end{align*}\pause -->
+
+<!--     Under the null, we can generate approximate the distribution of $\ExpectedCond{s(\Graph, \Depvar)}{\Depvar = \depvar}$ by simulations, in particular, drawing samples of new graphs (ERGMs). -->
 
 ## Algorithm
 
-1.  Estimate an ERGM (estimates can come from a single graph or pooled estimates). We denote the data-generating-process of this model as $\mathcal{D}: \Theta\times \mathcal{X}\mapsto \GRAPH$.
+1.  Estimate an ERGM (estimates can come from a single graph or pooled estimates). We denote the data-generating-process of this model as $\mathcal{D}: \Theta\times \mathcal{X}\mapsto \GRAPH$.\pause
 
-2.  Calculate the value $s_0 = s(\Graph, Y)$.
+2.  Calculate the value $t_0 = t(\Graph, Y)$, the observed test statistic (e.g. correlation between triads and $\depvar$).\pause
 
-3.  Now, for $b \in \{1, \dots, B\}$ do:
+3.  Now, for $b \in \{1, \dots, B\}$ do:\pause
     
-    1.  For each group $j$ in $\{1, \dots, J\}$, draw a new network $\graph_j^b\sim\mathcal{D}(\hat{\theta}, X_j)$, this new sequence is denoted $\Graph^b$
+    1.  For each group $j$ in $\{1, \dots, J\}$, draw a new network $\graph_j^b\sim\mathcal{D}(\hat{\theta}, X_j)$, this new sequence is denoted $\Graph^b$\pause
     
-  	2.  Using $\Graph^b$ and $Y$, calculate $s_b = s(\Graph^b, Y)$
+  	2.  Using $\Graph^b$ and $Y$, calculate $t_b = t(\Graph^b, Y)$\pause
   	
-  	3.  Next $b$.
+  	3.  Next $b$.\pause
 
-This will generate a null distribution for the statistic $s$, which we can use to compare against the observed statistic, $s_0$.
+This will generate a null distribution for the statistic $t$, which we can use to compare against the observed statistic, $t_0$.\pause
 
 \alert{Note} An important distinction to make is that structures that gave origin to the graph need not to be relevant for the team's performance *per se*.
 					
@@ -527,33 +562,35 @@ Suppose that we have a 3 networks of sizes 4, 4, and 5 respectively. The
 
 \normalsize
 
-We can use the distribution of the sequence $\{s_1, \dots, s_B\}$ as null to compare against $s_0$
+We can use the distribution of the sequence $\{t_1, \dots, t_B\}$ as null to compare against $t_0$
 
-# Part III: An empirical example
+## Simulation
 
-## Small teams performance
+Going back to our `fivenets` example:
 
-## Data
+- Imagine that $\depvar_\graph = \mbox{\texttt{nodeicov("female")}}_\graph + \varepsilon$, $\varepsilon\sim N(0,1)$
 
-## Results
+- Our test statistic $t$ is the correlation between $\depvar$ and \texttt{nodeicov("female")}
 
 ## Concluding remarks
 
 Exponential Random Graph Models for Small Networks:\pause
 
-1.  Not a new thing,\pause what's new is the tool to do so in a smooth way\pause
+1.  Not a new thing,\pause{} what's new is the tool to do so in a smooth way.\pause
 
-2.  Still work to do (on the development side of things): Goodness of fit tests, better algorithms for drawing random graphs, bayesian model\pause
+2.  Preliminary results (both from simulations and applications) look encouraging.\pause
+
+2.  Still work to do (on the development side of things): Goodness of fit tests, better algorithms for drawing random graphs, Bayesian models (because is fun...), etc.\pause
 
 3.  Can be extended to other types of ERGMs... our next target: TERGMs (Separable Exponential Random Graph Models)\pause
 
 Test for Association between graph level outcomes and graph structures:\pause
 
-1.  Still need to run simulation studies\pause
+1.  Still need to run simulation studies to explore **power** and **false discovery** rates.\pause
 
-2.  Key question 1: What happens when the graph structure is in both the ERGM and the stat\pause
+2.  Also on the development side of things, need to make things a bit faster and lightweight.\pause
 
-3.  What about other properties such as type I error?
+3.  Working on a more formal statistical framework (when is it a good/bad idea to use this kind of method).
 
 
 

@@ -57,9 +57,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="51.211562"
-     inkscape:cy="88.935291"
+     inkscape:zoom="3.959798"
+     inkscape:cx="119.96112"
+     inkscape:cy="99.306942"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -135,7 +135,7 @@
          x="72.519417"
          y="104.85015"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.41111112px;line-height:1.76388896px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-         id="tspan1979">calculate $s_b = s(\mathbf{G}^b, Y)$</tspan></text>
+         id="tspan1979">calculate $t_b = t(\mathbf{G}^b, Y)$</tspan></text>
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.18833572;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.8678161;paint-order:fill markers stroke"
        id="rect4547-2-4"
@@ -621,7 +621,7 @@
          sodipodi:role="line"
          id="tspan1816-0"
          x="48.527065"
-         y="70.895294">Calculate $s_0 = $</tspan></text>
+         y="70.895294">Calculate $t_0 = $</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.41111112px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -654,7 +654,7 @@
          sodipodi:role="line"
          x="48.5312"
          y="79.714737"
-         id="tspan4227">$s\left(\left[\begin{array}{c}\includegraphics[width=.02\linewidth]{g1.pdf}\\</tspan><tspan
+         id="tspan4227">$t\left(\left[\begin{array}{c}\includegraphics[width=.02\linewidth]{g1.pdf}\\</tspan><tspan
          style="stroke-width:0.26458332px"
          sodipodi:role="line"
          x="48.5312"
