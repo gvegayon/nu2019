@@ -564,13 +564,71 @@ Suppose that we have a 3 networks of sizes 4, 4, and 5 respectively. The
 
 We can use the distribution of the sequence $\{t_1, \dots, t_B\}$ as null to compare against $t_0$
 
-## Simulation
+## Toy simulation
 
-Going back to our `fivenets` example:
+```{r fivenets-sim-partII, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE}
+library(ergmito)
+library(gnet)
+# Loading the fivents dataset. We actually know that data generating process,
+# so we use these paramaters for the model
+data(fivenets, package="ergmito")
 
-- Imagine that $\depvar_\graph = \mbox{\texttt{nodeicov("female")}}_\graph + \varepsilon$, $\varepsilon\sim N(0,1)$
+# We will generate a group level variable that is related to the proportion of
+# females in the group
+set.seed(52)
+# y <- count_stats(fivenets ~ nodeocov("female"))
+# y <- y + rnorm(nnets(fivenets))
+y <- structure(c(1.01380909984854, 0.605144783941265, 4.30851530552903, 
+0.954760011709497, -0.133078830968053), .Dim = c(5L, 1L), .Dimnames = list(
+    NULL, "nodeocov(\"female\")"))
 
-- Our test statistic $t$ is the correlation between $\depvar$ and \texttt{nodeicov("female")}
+# Performing the struct test
+f02 <- function(g, y) cor(count_stats(g ~ nodeocov("female")), y, use = "complete.obs")[1] 
+test_struct <- struct_test(
+  fivenets ~ edges + nodematch("female"), y = y, R=3000,
+  stat = f02
+  )
+# mytest02
+
+x <- count_stats(fivenets ~ nodeocov("female"))
+test_ols <- summary(lm(y ~ x))
+```
+
+Going back to our `fivenets` example: \pause
+
+- Recall that our data-generating process for $\Graph$ was an ERGMito with parameters $\left(\theta_{edges}, \theta_{\mbox{\texttt{nodematch("female")}}}\right)$.\pause
+
+- Imagine that $\depvar_\graph = \mbox{\texttt{nodeicov("female")}}_\graph + \varepsilon$, $\varepsilon\sim N(0,1)$\pause
+
+- Our test statistic $t$ is the correlation between $\depvar$ and \texttt{nodeicov("female")}\pause
+
+- The data looks something like this\pause
+
+```{r fivenets-print-partII, echo=FALSE, cache=TRUE}
+knitr::kable(data.frame(
+  y = unname(y),
+  `nodeicov("female")` = unname(count_stats(fivenets ~ nodeicov("female"))),
+  check.rows = FALSE
+), col.names = c("y", "nodeicov(\"female\")"))
+```
+
+## Toy simulation
+
+\begin{figure}
+\centering
+
+```{r fivenets-print-results-partII, echo=FALSE, fig.width=10, fig.height=6, out.width='.7\\linewidth'}
+op <- par(mfrow=c(1, 2))
+hist(test_struct$t, breaks=50, col="gray", border="transparent", main = "Null distribution of t",
+     xlab = "Values of t")
+abline(v = test_struct$t0, col="steelblue", lwd=2, lty="dashed")
+plot(y ~ x, main = "Linear regression", xlab="nodeocov(\"female\")", ylab = "y")
+abline(lm(y~x), lty="dashed", lwd=2)
+par(op)
+```
+
+\caption{Comparing our method against a linear regression. Our proposed method returned a two sided p-value of `r sprintf("%05.3f", test_struct$pvalue)`, while the pvalue for the OLS coefficient was `r sprintf("%05.3f", test_ols$coefficients["x", "Pr(>|t|)"])`.}
+\end{figure}
 
 ## Concluding remarks
 
