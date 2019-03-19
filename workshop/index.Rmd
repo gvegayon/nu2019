@@ -1,0 +1,159 @@
+---
+title: "A quick introduction to the ergmito R package"
+author: "George G Vega Yon"
+date: "March 20, 2019"
+output:
+  - html_document
+  - github_document
+---
+
+## Installing `ergmito`
+
+Follow the instructions available on github https://github.com/muriteams/ergmito
+
+## Likelihood
+
+- The `ergmito` package's core function consists on the likelihood function
+
+- The function itself is a wrapper of `ergm::ergm.allstats` which returns exactly that:
+  all the statistics of a graph of a given size.
+  
+- One important detail: We are not calculating exactly the same function as the
+  one observed in the formula for ERGMs, we are using the fact that **isomorphism** occurs farily often, so instead we used weights:
+
+## Optimization
+
+- The `ergmito` function works in the following way:
+    
+    1.  Reads in the data and creates a log-likelihood function together with the corresponding gradient function.
+    
+    2.  Uses the `stats::optim` function in R to maximize the log-likelihood. Some details:
+        
+        a.  Uses the "BFGS" algorithm for optimization (standard in R)
+        
+        b.  Instead of approximating the gradient, we pass the true analytical gradient (since log-likelihood can be computed exactly, so this can be).
+        
+        c.  Solves the same optimization problem 5 times (see the `ntries` parameter) just to make sure that we are getting a maximum.
+        
+    The last point after experiencing some convergence issues in the optmization algorithms which were not yielding consistent results. Earlier we were using the limited memory bounded version of BFGS which turned out not to be very appropiate for us.
+    
+
+## Example 1: The fivenets network
+
+-   This network was generated using the sampler function available in the package (`ergmito::new_rergmito`)
+
+-   The population parameters in this dataset are `par[edges] = -2.0` and `par[nodematch.female] = 0.2`.
+
+-   We are going to try to recover the original parameters
+    
+    ```{r part1-initial-fit}
+    library(ergmito)
+    
+    data("fivenets", package="ergmito")
+    
+    (model0 <- ergmito(fivenets ~ edges))
+    ```
+
+-   Let's take a look at what the object of class `ergmito` includes:
+
+    ```{r part1-str}
+    str(model0, max.level = 1)
+    ```
+    
+    The `optim.out` component is what the `stats::optim` function returns
+    
+    ```{r part1-optim.out}
+    str(model0$optim.out)
+    ```
+    
+    The `formulae` object is what actually holds the log-likelihood function and the gradient. It actually has its own print method:
+    
+    ```{r part1-formulae}
+    model0$formulae
+    ```
+    
+-   We can use the different methods available for `ergmito` class object:
+    
+    ```{r part1-methods}
+    confint(model0)
+    vcov(model0)
+    logLik(model0)
+    AIC(model0)
+    BIC(model0)
+    summary(model0)
+    nobs(model0)
+    ```
+
+-   Now, let's try to fit other models. We will store the results and try to add them up together in a single output table
+    
+    ```{r part1-morefits}
+    model1 <- ergmito(fivenets ~ edges + ttriad)
+    model2 <- ergmito(fivenets ~ edges + nodeicov("female"))
+    model3 <- ergmito(fivenets ~ edges + nodematch("female"))
+    ```
+
+-   Furthermore, the package includes methods for the [**texreg**](http://github.com/leifeld/texreg/) R package, so we can export lists of fitted models directly
+    
+    ```{r part1-texreg, results='asis'}
+    library(texreg)
+    htmlreg(
+      l       = list(Baseline = model0, Balance = model1, icovFemale = model2, Homophily = model3),
+      doctype = FALSE,
+      caption = "My first ergmito table"
+      )
+    ```
+    
+## Simulating networks
+
+-   An important part of the current implementation of the sampling function is been able to generate the support of the graphs, this is, the power set of size $2^{n(n-1)}$ in the case of directed graphs.
+
+-   The function `powerset` does exactly that. Let's check it out:
+    
+    In the simplest case (2 individuals), we have 4 possible networks:
+    
+    ```{r part2-sampler-powerset}
+    powerset(2) 
+    ```
+    
+    But the number of networks starts increasing fast, e.g.
+        
+    ```{r part2-sampler-powerset2, cache=TRUE}
+    sizes <- c(length(powerset(2)), length(powerset(3)), length(powerset(4)))
+    plot(
+      y=sizes, x=2:4, log="y", type="b",
+      ylab = "Size of the support (log-scale)",
+      xlab = "Number of Nodes",
+      main = "Careful to go above 5..."
+      )
+    ```
+
+-   Using this function, the function `new_rergmito` creates an object of class `ergmito_sampler` that can be used to draw samples from little ERGMs fast. Let's see a simple example for a network of size 4
+    
+    ```{r part2-sampler-edges}
+    sampler0 <- new_rergmito(rbernoulli(4) ~ edges, theta = c(-1), sizes = 4)
+    
+    # How close do we get to the population parameter -1 with 50 networks
+    set.seed(1)
+    dat <- sampler0$sample(50, s = 4)
+    summary(ergmito(dat ~ edges))
+    ```
+    
+    How about making it a bit more complex, let's throw in transitive triads
+    
+    ```{r part2-sampler-edges-ttriad}
+    sampler1 <- new_rergmito(rbernoulli(4) ~ edges + ttriad, theta = c(-2, 1))
+    
+    set.seed(1)
+    dat <- sampler1$sample(50, s = 4)
+    summary(ergmito(dat ~ edges + ttriad))
+    ```
+
+-   In some cases we would like to generate more complex samplers using, for example, other sufficient statistics. While all `ergm` terms are available, not all are available efficiently; only those listed in `count_stats` have vectorized versions:
+    
+    ```{r part2-sampler-count_stats}
+    AVAILABLE_STATS() # the statistics listed here can be computed fast
+    ```
+
+
+    
+

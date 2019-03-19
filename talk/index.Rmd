@@ -266,7 +266,7 @@ Once it converges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\p
 
 -   In addition, most of the time samples of small networks include multiple of them, e.g.: Families, Small teams (like our data), Ego-nets, etc.\pause
 
--   This makes pooled ERGM estimates a natural way of modeling the data:\pause
+-   This makes pooled ERGM estimates a natural way of modeling the data: \pause{}
 
     $$
     \Prcond{\Graph_1 = \graph_1, \dots, \Graph_p = \graph_p}{\params, \Indepvar_1, \dots, \Indepvar_p} = \prod_p\frac{%
@@ -311,9 +311,9 @@ Sidetrack...
 \begin{minipage}[c]{1\linewidth}
 \large \textbf{ito, ita}: From the latin -\textit{\=ittus}. suffix in Spanish used to denote small or affection. e.g.:
 
-\hspace{.5cm} \textit{¡Que lindo ese perr\textcolor{USCCardinal}{\textbf{ito}}!} / \textit{What a beautiful little dog!}
+\hspace{.5cm} \textit{¡Qué lindo ese perr\textcolor{USCCardinal}{\textbf{ito}}!} / \textit{What a beautiful little dog!}
 
-\hspace{.5cm} \textit{¿Me darias una tac\textcolor{USCCardinal}{\textbf{ita}} de azúcar?} / \textit{Would you give me a small cup of sugar?}
+\hspace{.5cm} \textit{¿Me darías una tac\textcolor{USCCardinal}{\textbf{ita}} de azúcar?} / \textit{Would you give me a small cup of sugar?}
 \normalsize
 \end{minipage}\pause
 
@@ -371,7 +371,7 @@ par(op)
 fivenets[[1]]
 ```
 
-\pause So how can we fit this model?
+\pause How can we fit an ERGMito to this 5 networks?
 
 ## `ergmito` example (cont'd)
 
@@ -416,9 +416,7 @@ We simulated 100,000 samples, each one composed of an average of 30 networks.
 
 ## Preliminary results
 
-\footnotesize
-
-```{r preleminary-results, echo=FALSE, results='asis', warning=FALSE, message=FALSE, cache=TRUE}
+```{r preleminary-results, echo=FALSE, results='asis', warning=FALSE, message=FALSE, cache=TRUE, small=FALSE}
 
 library(ergmito)
 library(magrittr)
@@ -564,7 +562,7 @@ Suppose that we have a 3 networks of sizes 4, 4, and 5 respectively. The
 
 We can use the distribution of the sequence $\{t_1, \dots, t_B\}$ as null to compare against $t_0$
 
-## Toy simulation
+## Extended example with `fivenets`
 
 ```{r fivenets-sim-partII, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE}
 library(ergmito)
@@ -612,7 +610,21 @@ knitr::kable(data.frame(
 ), col.names = c("y", "nodeicov(\"female\")"))
 ```
 
-## Toy simulation
+---
+
+We will try to assess the presence/absence of an association between the outcome $\depvar$ and the number of ties received by women, `nodeicov("female")`, using both a linear regression model and our test
+
+-   *Our approach* Is the the observed correlation statistic $t_0 = \mbox{cor}\left(y, \mbox{\texttt{nodeicov("female")}}\right)$ different than as expected by chance (assuming $\graph$ follows an ERGM distribution)?
+
+-   *OLS approach* In the following model:
+
+    $$
+    \depvar = \alpha + \theta^{OLS}\mbox{\texttt{nodeicov("female")}} % + \varepsilon,\quad\varepsilon\sim N(0,1)
+    $$
+    is the $\theta_{OLS}$ parameter significantly different from zero?
+    
+
+## Extended example with `fivenets` (cont'd)
 
 \begin{figure}
 \centering
