@@ -226,7 +226,7 @@ Description of the MCMC-MLE algorithm [@Geyer1992] \pause
     
     a.  Generate a large sample of graphs from $\Prcond{\Graph = \graph}{\hat\theta_0, \Indepvar}$ using MCMC \pause
     
-    b.  Use the simulated sample of graphs to approximate the likelihood function. And with this approximation update the parameter $\theta_0$ using a Newton-Raphson step. \pause
+    b.  Use the simulated sample of graphs **to approximate the normalizing constant**, and so, the likelihood function. And with this approximation update the parameter $\theta_0$ using a Newton-Raphson step. \pause
     
     c.  next iteration\pause 
     
@@ -282,7 +282,7 @@ How different is this from the "normal" way to fit ERGMs?
 
 ## Estimation of ERGM\only<2->{\textcolor{USCCardinal}{ito}}s (cont'd) {.t}
 
-Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm [@Geyer1992]
+Description of the \textcolor<2->{lightgray}{MCMC-}\textcolor<2->{USCCardinal}{MLE} algorithm \textcolor<2->{lightgray}{(Geyer and Thompson, 1992)}
 
 1.  Make an initial guess of the model parameters $\hat\theta_0$
 
@@ -460,14 +460,15 @@ Two common approaches: Generalized Linear Models (GLMs), or permutation-like tes
 
 - Permutation-like tests:\pause
     
-    - Permutation: shuffle the dependent variable and compute, for example, correlations.\pause{} \textcolor{USCCardinal}{\textbf{This assumes the outcome is completely independent from the observation.}}\pause
+    - Permutation: shuffle the dependent variable and compute, for example, correlations.\pause{} \textcolor{USCCardinal}{\textbf{Which does not control for other factors in the system.}}\pause
     
     - Rewiring [see @Milo2004]: Sample networks by generating new graphs using a rewiring algorithm, usually preserving some property such as degree sequence--the observed sequence of in/out degree.\pause \textcolor{USCCardinal}{\textbf{This assumes an oversimplifying data generating process.}}\pause{} And worse, in a network of size 4, how many different networks can be observed **holding the degree sequence fixed**?
 
-\pause BTW Degree sequence $\mapsto$ Scale-free networks
+\pause BTW: Talking about Degree sequence leads directly to the now controvelsial Scale-free networks.
   
 ---
 
+**"Scale-free networks are rare"**
 
 > \Huge"\normalsize The **structural diversity of real-world networks** uncovered here presents both a puzzle and an opportunity. The strong focus in the scientific literature on **explaining and exploiting scale-free patterns has meant relatively less is known about mechanisms that produce non-scale-free structural patterns**, e.g., those with degree distributions better fitted by a log-normal. Two important directions of future work will be the **development and validation of novel mechanisms for generating more realistic degree structure in networks**, and novel statistical techniques for identifying or untangling them given empirical data\Huge"\normalsize
 
@@ -596,9 +597,9 @@ Going back to our `fivenets` example: \pause
 
 - Recall that our data-generating process for $\Graph$ was an ERGMito with parameters $\left(\theta_{edges}, \theta_{\mbox{\texttt{nodematch("female")}}}\right)$.\pause
 
-- Imagine that $\depvar_\graph = \mbox{\texttt{nodeicov("female")}}_\graph + \varepsilon$, $\varepsilon\sim N(0,1)$\pause
+- Imagine that $\depvar_\graph = \sufstats{\graph} + \varepsilon$, with $\varepsilon\sim N(0,1)$ and $\sufstats{\graph}$ as the number of ties sent to women (`nodeicov("female")` in `ergm`)\pause
 
-- Our test statistic $t$ is the correlation between $\depvar$ and \texttt{nodeicov("female")}\pause
+- Our test statistic $t$ is the correlation between $\depvar$ and $\sufstats{\graph}$\pause
 
 - The data looks something like this\pause
 
@@ -607,19 +608,19 @@ knitr::kable(data.frame(
   y = unname(y),
   `nodeicov("female")` = unname(count_stats(fivenets ~ nodeicov("female"))),
   check.rows = FALSE
-), col.names = c("y", "nodeicov(\"female\")"))
+), col.names = c("y", "s(g)"))
 ```
 
 ---
 
-We will try to assess the presence/absence of an association between the outcome $\depvar$ and the number of ties received by women, `nodeicov("female")`, using both a linear regression model and our test
+We will try to assess the presence/absence of an association between the outcome $\depvar$ and the number of ties received by women, `nodeicov("female")`, using both a linear regression model and our test\pause
 
--   *Our approach* Is the the observed correlation statistic $t_0 = \mbox{cor}\left(y, \mbox{\texttt{nodeicov("female")}}\right)$ different than as expected by chance (assuming $\graph$ follows an ERGM distribution)?
+-   *Our approach* Is the the observed correlation statistic $t_0 = \mbox{cor}\left(y, \sufstats{\graph}\right)$ different than as expected by chance (assuming $\graph$ follows an ERGM distribution)?\pause
 
--   *OLS approach* In the following model:
+-   *OLS approach* In the following model:\pause
 
     $$
-    \depvar = \alpha + \theta^{OLS}\mbox{\texttt{nodeicov("female")}} % + \varepsilon,\quad\varepsilon\sim N(0,1)
+    \depvar = \alpha + \theta^{OLS}\sufstats{\graph} + \varepsilon,\quad\varepsilon\sim N(0,1)
     $$
     is the $\theta_{OLS}$ parameter significantly different from zero?
     
@@ -634,7 +635,7 @@ op <- par(mfrow=c(1, 2))
 hist(test_struct$t, breaks=50, col="gray", border="transparent", main = "Null distribution of t",
      xlab = "Values of t")
 abline(v = test_struct$t0, col="steelblue", lwd=2, lty="dashed")
-plot(y ~ x, main = "Linear regression", xlab="nodeocov(\"female\")", ylab = "y")
+plot(y ~ x, main = "Linear regression", xlab="s(g)", ylab = "y")
 abline(lm(y~x), lty="dashed", lwd=2)
 par(op)
 ```
@@ -650,7 +651,7 @@ Exponential Random Graph Models for Small Networks:\pause
 
 2.  Preliminary results (both from simulations and applications) look encouraging.\pause
 
-2.  Still work to do (on the development side of things): Goodness of fit tests, better algorithms for drawing random graphs, Bayesian models (because is fun...), etc.\pause
+2.  Still work to do (on the development side of things): Goodness of fit tests, better algorithms for drawing random graphs, Bayesian models \pause (because is *great* fun...), etc.\pause
 
 3.  Can be extended to other types of ERGMs... our next target: TERGMs (Separable Exponential Random Graph Models)\pause
 
