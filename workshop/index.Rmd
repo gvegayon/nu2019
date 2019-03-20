@@ -154,6 +154,24 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
     AVAILABLE_STATS() # the statistics listed here can be computed fast
     ```
 
+## Counting network statistics
+
+-   A significant part of `ergmito` is about counting sufficient statistics.
+
+-   In the `ergm` package, the function `ergm::summary_formula` provides a way of doing such. The problem with it is that it was not designed to be vectorized.
+
+-   Our function `count_stats()` does so in an efficient way, so we can count stats in al list of adjacency matrices fast
+    
+    ```{r}
+    pset4 <- powerset(4)
+    system.time({ans0 <- count_stats(pset4, "ttriad")})
+    system.time({ans1 <- sapply(pset4, function(i) ergm::summary_formula(i ~ ttriad))})
+    
+    # Are we getting the same?
+    identical(as.vector(ans0), unname(ans1))
+    ```
+
+-   As mentioned in the previous section, the list of available statistics is provided by `AVAILABLE_STATS()`.
 
     
 

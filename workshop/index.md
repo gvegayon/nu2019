@@ -87,12 +87,12 @@ Follow the instructions available on github
         ##  $ null.lik  :Class 'logLik' : -42 (df=0)
         ##  $ covar     : num [1, 1] 0.075
         ##   ..- attr(*, "dimnames")=List of 2
-        ##  $ coef.init : num [1:5, 1] 0.915 0.294 -0.152 0.165 0.869
+        ##  $ coef.init : num [1:5, 1] 0.5703 0.7606 -0.3605 1.8318 -0.0475
         ##  $ formulae  :List of 7
         ##   ..- attr(*, "class")= chr "ergmito_loglik"
         ##  $ nobs      : num 60
         ##  $ network   :List of 5
-        ##  $ init      : num [1:5, 1] 0.915 0.294 -0.152 0.165 0.869
+        ##  $ init      : num [1:5, 1] 0.5703 0.7606 -0.3605 1.8318 -0.0475
         ##  $ optim.out :List of 6
         ##  - attr(*, "class")= chr [1:2] "ergmito" "ergm"
     
@@ -752,3 +752,40 @@ Follow the instructions available on github
         ##  [1] "mutual"    "edges"     "ttriad"    "ctriad"    "nodeicov" 
         ##  [6] "nodeocov"  "nodematch" "triangle"  "balance"   "t300"     
         ## [11] "t102"
+
+## Counting network statistics
+
+  - A significant part of `ergmito` is about counting sufficient
+    statistics.
+
+  - In the `ergm` package, the function `ergm::summary_formula` provides
+    a way of doing such. The problem with it is that it was not designed
+    to be vectorized.
+
+  - Our function `count_stats()` does so in an efficient way, so we can
+    count stats in al list of adjacency matrices fast
+    
+    ``` r
+    pset4 <- powerset(4)
+    system.time({ans0 <- count_stats(pset4, "ttriad")})
+    ```
+    
+        ##    user  system elapsed 
+        ##   0.000   0.000   0.002
+    
+    ``` r
+    system.time({ans1 <- sapply(pset4, function(i) ergm::summary_formula(i ~ ttriad))})
+    ```
+    
+        ##    user  system elapsed 
+        ##   6.812   0.000   6.813
+    
+    ``` r
+    # Are we getting the same?
+    identical(as.vector(ans0), unname(ans1))
+    ```
+    
+        ## [1] TRUE
+
+  - As mentioned in the previous section, the list of available
+    statistics is provided by `AVAILABLE_STATS()`.
