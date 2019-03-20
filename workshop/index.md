@@ -1,12 +1,33 @@
 A quick introduction to the ergmito R package
 ================
 George G Vega Yon
-March 20, 2019
+SONIC Speaker Series<br>Northwestern University, IL<br>March 20, 2019
 
-## Installing `ergmito`
+## Contents
 
-Follow the instructions available on github
-<https://github.com/muriteams/ergmito>
+1.  Setup
+
+Key parts of `ergmito`
+
+2.  Likelihood function
+
+3.  Estimation function
+
+4.  Simulation
+
+Using gnet
+
+5.  A preview example
+
+## Setup
+
+  - Install the `ergmito` R package: Follow the instructions available
+    on github <https://github.com/muriteams/ergmito>
+
+  - Install the `gnet` R package: Follow the instructions available on
+    github <https://github.com/muriteams/ergmito>
+
+  - Install the `ergm` R package: `install.packages("ergm")`
 
 ## Likelihood
 
@@ -54,7 +75,8 @@ Follow the instructions available on github
   - The population parameters in this dataset are `par[edges] = -2.0`
     and `par[nodematch.female] = 0.2`.
 
-  - We are going to try to recover the original parameters
+  - Before fitting the true model, let’s take a look at the simplest
+    example, estimating the probability of a bernoulli graph:
     
     ``` r
     library(ergmito)
@@ -71,7 +93,45 @@ Follow the instructions available on github
         ##   edges  
         ## -0.6931
 
-  - Let’s take a look at what the object of class `ergmito` includes:
+  - Since this is a very simple model (no markovian dependency,
+    i.e. edges are independent), we could have just estimated this by
+    treating the total number of observed ties as a binomal random
+    variable. In such case, the MLE estimate is simply the total number
+    of edges over the possible number of edges. We can compare the odds
+    of this model with the binomial MLE estimate (should obtain the
+    same):
+    
+    ``` r
+    # Calculating the probability of observing a tie
+    odds <- exp(coef(model0))
+    odds/(1 + odds)
+    ```
+    
+        ##     edges 
+        ## 0.3333333
+    
+    ``` r
+    # Figuring out MLE estimate
+    n <- nvertex(model0) # This function returns the number of vertices
+    m <- nedges(model0)  # this other function, the number of ties (see ?nvertex)
+    
+    # Since model0 has multiple networks, both m and n are vectors
+    n; m
+    ```
+    
+        ## [1] 4 4 4 4 4
+    
+        ## [1] 2 7 4 5 2
+    
+    ``` r
+    # MLE for the probability of a tie (this SHOULD match the above)
+    mean(m/(n*(n-1)))
+    ```
+    
+        ## [1] 0.3333333
+
+  - Just like `ergm` objects, `ergmito` objects have a lot of
+    components. Let’s take a look at what the object includes:
     
     ``` r
     str(model0, max.level = 1)
@@ -87,12 +147,12 @@ Follow the instructions available on github
         ##  $ null.lik  :Class 'logLik' : -42 (df=0)
         ##  $ covar     : num [1, 1] 0.075
         ##   ..- attr(*, "dimnames")=List of 2
-        ##  $ coef.init : num [1:5, 1] 0.5703 0.7606 -0.3605 1.8318 -0.0475
+        ##  $ coef.init : num [1:5, 1] -0.464 1.347 -0.848 -1.254 -0.294
         ##  $ formulae  :List of 7
         ##   ..- attr(*, "class")= chr "ergmito_loglik"
         ##  $ nobs      : num 60
         ##  $ network   :List of 5
-        ##  $ init      : num [1:5, 1] 0.5703 0.7606 -0.3605 1.8318 -0.0475
+        ##  $ init      : num [1:5, 1] -0.464 1.347 -0.848 -1.254 -0.294
         ##  $ optim.out :List of 6
         ##  - attr(*, "class")= chr [1:2] "ergmito" "ergm"
     
@@ -107,14 +167,14 @@ Follow the instructions available on github
         ##  $ par        : Named num -0.693
         ##   ..- attr(*, "names")= chr "edges"
         ##  $ value      : num -38.2
-        ##  $ counts     : Named int [1:2] 12 7
+        ##  $ counts     : Named int [1:2] 12 6
         ##   ..- attr(*, "names")= chr [1:2] "function" "gradient"
         ##  $ convergence: int 0
         ##  $ message    : NULL
         ##  $ hessian    : num [1, 1] -13.3
     
     The `formulae` object is what actually holds the log-likelihood
-    function and the gradient. It actually has its own print method:
+    function and the gradient. It has its own print method:
     
     ``` r
     model0$formulae
@@ -125,6 +185,8 @@ Follow the instructions available on github
         ## Model:  fivenets ~ edges 
         ## Available elements by using the $ operator:
         ## loglik: function (params, stats = NULL) grad  : function (params, stats = NULL)
+
+-----
 
   - We can use the different methods available for `ergmito` class
     object:
@@ -196,12 +258,23 @@ Follow the instructions available on github
     model3 <- ergmito(fivenets ~ edges + nodematch("female"))
     ```
 
+-----
+
   - Furthermore, the package includes methods for the
     [**texreg**](http://github.com/leifeld/texreg/) R package, so we can
     export lists of fitted models directly
     
     ``` r
     library(texreg)
+    ```
+    
+        ## Version:  1.36.23
+        ## Date:     2017-03-03
+        ## Author:   Philip Leifeld (University of Glasgow)
+        ## 
+        ## Please cite the JSS article in your publications -- see citation("texreg").
+    
+    ``` r
     htmlreg(
       l       = list(Baseline = model0, Balance = model1, icovFemale = model2, Homophily = model3),
       doctype = FALSE,
@@ -631,6 +704,68 @@ Follow the instructions available on github
     
     </table>
 
+## Bootstrap
+
+  - We also include a way to perform bootstrapping.
+
+  - In the following example we are performing bootstrap on model 3
+    using 4 cpus (so it is done using parallel
+        computing):
+    
+    ``` r
+    (ans <-ergmito_boot(model3, R=1000, ncpus = 4))
+    ```
+    
+        ## Warning: You are doing bootstrapping with less than 10 networks (and even
+        ## 10 is too few).
+    
+        ## Bootstrapped 1000 replicates:
+        ## 
+        ## ERGMito estimates
+        ## 
+        ##  Coefficients:
+        ##            edges  nodematch.female  
+        ##           -1.705             1.587
+    
+    ``` r
+    summary(ans)
+    ```
+    
+        ## $coefs
+        ##                   Estimate Std. Error   z value  Pr(>|z|)
+        ## edges            -1.704748   1.097533 -1.553254 0.1203624
+        ## nodematch.female  1.586965   1.046163  1.516939 0.1292821
+        ## 
+        ## $aic
+        ## [1] 73.34109
+        ## 
+        ## $bic
+        ## [1] 77.52978
+        ## 
+        ## $model
+        ## [1] "fivenets ~ edges + nodematch(\"female\")"
+        ## 
+        ## attr(,"class")
+        ## [1] "ergmito_summary"
+    
+    This object has an additional component, the bootstrap distribution
+    of the parameters:
+    
+    ``` r
+    op <- par(mfrow = c(1, 2))
+    hist(ans$dist[,"edges"], main = "edges", xlab = "Estimated coeff", breaks = 100)
+    hist(ans$dist[,"nodematch.female"], main = "nodematch.female", xlab = "Estimated coeff", breaks = 100)
+    ```
+    
+    <img src="index_files/figure-gfm/part1-bootstrap-dist-1.png" width="600" />
+    
+    ``` r
+    par(op)
+    ```
+
+  - This is available for the users, although its usage is not
+    encouraged.
+
 ## Simulating networks
 
   - An important part of the current implementation of the sampling
@@ -679,7 +814,7 @@ Follow the instructions available on github
       )
     ```
     
-    ![](index_files/figure-gfm/part2-sampler-powerset2-1.png)<!-- -->
+    <img src="index_files/figure-gfm/part2-sampler-powerset2-1.png" width="600" />
 
   - Using this function, the function `new_rergmito` creates an object
     of class `ergmito_sampler` that can be used to draw samples from
@@ -771,14 +906,14 @@ Follow the instructions available on github
     ```
     
         ##    user  system elapsed 
-        ##   0.000   0.000   0.002
+        ##   0.004   0.000   0.002
     
     ``` r
     system.time({ans1 <- sapply(pset4, function(i) ergm::summary_formula(i ~ ttriad))})
     ```
     
         ##    user  system elapsed 
-        ##   6.812   0.000   6.813
+        ##   6.856   0.000   6.856
     
     ``` r
     # Are we getting the same?
@@ -789,3 +924,124 @@ Follow the instructions available on github
 
   - As mentioned in the previous section, the list of available
     statistics is provided by `AVAILABLE_STATS()`.
+
+## gnet: Reproducing the example of the presentation
+
+``` r
+library(ergmito)
+library(gnet)
+# Loading the fivents dataset. We actually know that data generating process,
+# so we use these paramaters for the model
+data(fivenets, package="ergmito")
+```
+
+``` r
+# We will generate a group level variable that is related to the proportion of
+# females in the group
+set.seed(52)
+# y <- count_stats(fivenets ~ nodeocov("female"))
+# y <- y + rnorm(nnets(fivenets))
+y <- structure(c(1.01380909984854, 0.605144783941265, 4.30851530552903, 
+0.954760011709497, -0.133078830968053), .Dim = c(5L, 1L), .Dimnames = list(
+    NULL, "nodeocov(\"female\")"))
+```
+
+``` r
+# First, we define the function
+f02 <- function(g, y) {
+  cor(count_stats(g ~ nodeocov("female")), y, use = "complete.obs")[1] 
+}
+
+# Then we can simple call the fuction struct_test to do it for us:
+test_struct <- struct_test(
+  fivenets ~ edges + nodematch("female"), y = y, R=3000,
+  stat = f02
+  )
+test_struct
+```
+
+    ## Test of structural association between a network and a graph level outcome
+    ## # of obs: 5
+    ## # of replicates: 3000 (3000 used)
+    ## Alternative: two.sided
+    ## S[1] s(obs): 0.5742 s(sim): -0.1183 p-val: 0.0453
+
+Let’s see what we have
+    here:
+
+``` r
+names(test_struct)
+```
+
+    ##  [1] "t"           "t0"          "pvalue"      "alternative" "R"          
+    ##  [6] "samplers"    "call"        "seed"        "n"           "stat"       
+    ## [11] "obs.used"
+
+``` r
+test_struct$samplers
+```
+
+    ## [[1]]
+    ## ERGMito simulator
+    ## Call   : ergmito::new_rergmito(model = netmodel, theta = stats::coef(x)) 
+    ## sample : function (n, s, theta = NULL, as_indexes = FALSE)  
+    ## 
+    ## [[2]]
+    ## ERGMito simulator
+    ## Call   : ergmito::new_rergmito(model = netmodel, theta = stats::coef(x)) 
+    ## sample : function (n, s, theta = NULL, as_indexes = FALSE)  
+    ## 
+    ## [[3]]
+    ## ERGMito simulator
+    ## Call   : ergmito::new_rergmito(model = netmodel, theta = stats::coef(x)) 
+    ## sample : function (n, s, theta = NULL, as_indexes = FALSE)  
+    ## 
+    ## [[4]]
+    ## ERGMito simulator
+    ## Call   : ergmito::new_rergmito(model = netmodel, theta = stats::coef(x)) 
+    ## sample : function (n, s, theta = NULL, as_indexes = FALSE)  
+    ## 
+    ## [[5]]
+    ## ERGMito simulator
+    ## Call   : ergmito::new_rergmito(model = netmodel, theta = stats::coef(x)) 
+    ## sample : function (n, s, theta = NULL, as_indexes = FALSE)
+
+``` r
+# Comparing with what we get from a
+x <- count_stats(fivenets ~ nodeocov("female"))
+(test_ols <- summary(lm(y ~ x)))
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = y ~ x)
+    ## 
+    ## Residuals:
+    ##       1       2       3       4       5 
+    ## -0.6817 -0.2262  1.7489  0.9875 -1.8286 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept) -0.03279    1.34965  -0.024    0.982
+    ## x            0.86414    0.71133   1.215    0.311
+    ## 
+    ## Residual standard error: 1.622 on 3 degrees of freedom
+    ## Multiple R-squared:  0.3297, Adjusted R-squared:  0.1063 
+    ## F-statistic: 1.476 on 1 and 3 DF,  p-value: 0.3113
+
+Results
+
+``` r
+op <- par(mfrow=c(1, 2))
+hist(test_struct$t, breaks=50, col="gray", border="transparent", main = "Null distribution of t",
+     xlab = "Values of t")
+abline(v = test_struct$t0, col="steelblue", lwd=2, lty="dashed")
+plot(y ~ x, main = "Linear regression", xlab="s(g)", ylab = "y")
+abline(lm(y~x), lty="dashed", lwd=2)
+```
+
+<img src="index_files/figure-gfm/part3-gnet-example-plot-1.png" width="600" />
+
+``` r
+par(op)
+```

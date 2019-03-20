@@ -1,15 +1,38 @@
 ---
 title: "A quick introduction to the ergmito R package"
 author: "George G Vega Yon"
-date: "March 20, 2019"
+date: "SONIC Speaker Series<br>Northwestern University, IL<br>March 20, 2019"
 output:
-  - html_document
   - github_document
 ---
 
-## Installing `ergmito`
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(out.width = 600)
+```
 
-Follow the instructions available on github https://github.com/muriteams/ergmito
+## Contents
+
+1. Setup
+
+Key parts of `ergmito`
+
+2.  Likelihood function
+
+3.  Estimation function
+
+4.  Simulation
+
+Using gnet
+
+5.  A preview example
+
+## Setup 
+
+- Install the `ergmito` R package: Follow the instructions available on github https://github.com/muriteams/ergmito
+
+- Install the `gnet` R package: Follow the instructions available on github https://github.com/muriteams/ergmito
+
+- Install the `ergm` R package: `install.packages("ergm")`
 
 ## Likelihood
 
@@ -44,7 +67,7 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
 
 -   The population parameters in this dataset are `par[edges] = -2.0` and `par[nodematch.female] = 0.2`.
 
--   We are going to try to recover the original parameters
+-   Before fitting the true model, let's take a look at the simplest example, estimating the probability of a bernoulli graph:
     
     ```{r part1-initial-fit}
     library(ergmito)
@@ -54,7 +77,25 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
     (model0 <- ergmito(fivenets ~ edges))
     ```
 
--   Let's take a look at what the object of class `ergmito` includes:
+-   Since this is a very simple model (no markovian dependency, i.e. edges are independent), we could have just estimated this by treating the total number of observed ties as a binomal random variable. In such case, the MLE estimate is simply the total number of edges over the possible number of edges. We can compare the odds of this model with the binomial MLE estimate (should obtain the same):
+
+    ```{r part1-proof-of-concept}
+    # Calculating the probability of observing a tie
+    odds <- exp(coef(model0))
+    odds/(1 + odds)
+    
+    # Figuring out MLE estimate
+    n <- nvertex(model0) # This function returns the number of vertices
+    m <- nedges(model0)  # this other function, the number of ties (see ?nvertex)
+    
+    # Since model0 has multiple networks, both m and n are vectors
+    n; m
+    
+    # MLE for the probability of a tie (this SHOULD match the above)
+    mean(m/(n*(n-1)))
+    ```
+
+-   Just like `ergm` objects, `ergmito` objects have a lot of components. Let's take a look at what the object includes:
 
     ```{r part1-str}
     str(model0, max.level = 1)
@@ -66,12 +107,14 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
     str(model0$optim.out)
     ```
     
-    The `formulae` object is what actually holds the log-likelihood function and the gradient. It actually has its own print method:
+    The `formulae` object is what actually holds the log-likelihood function and the gradient. It has its own print method:
     
     ```{r part1-formulae}
     model0$formulae
     ```
-    
+
+---
+
 -   We can use the different methods available for `ergmito` class object:
     
     ```{r part1-methods}
@@ -92,6 +135,8 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
     model3 <- ergmito(fivenets ~ edges + nodematch("female"))
     ```
 
+---
+
 -   Furthermore, the package includes methods for the [**texreg**](http://github.com/leifeld/texreg/) R package, so we can export lists of fitted models directly
     
     ```{r part1-texreg, results='asis'}
@@ -102,6 +147,30 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
       caption = "My first ergmito table"
       )
     ```
+    
+## Bootstrap
+
+-   We also include a way to perform bootstrapping.
+
+-   In the following example we are performing bootstrap on model 3 using 4 cpus (so it is done using parallel computing):
+
+    ```{r part1-bootstrap, cache=TRUE}
+    (ans <-ergmito_boot(model3, R=1000, ncpus = 4))
+    summary(ans)
+    ```
+    
+    This object has an additional component, the bootstrap distribution of the parameters:
+    
+    ```{r part1-bootstrap-dist, cache=TRUE}
+    op <- par(mfrow = c(1, 2))
+    hist(ans$dist[,"edges"], main = "edges", xlab = "Estimated coeff", breaks = 100)
+    hist(ans$dist[,"nodematch.female"], main = "nodematch.female", xlab = "Estimated coeff", breaks = 100)
+    par(op)
+    ```
+    
+    
+-   This is available for the users, although its usage is not encouraged.
+
     
 ## Simulating networks
 
@@ -162,7 +231,7 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
 
 -   Our function `count_stats()` does so in an efficient way, so we can count stats in al list of adjacency matrices fast
     
-    ```{r}
+    ```{r part2-sampler-count_stats_vs_summary, cache=TRUE}
     pset4 <- powerset(4)
     system.time({ans0 <- count_stats(pset4, "ttriad")})
     system.time({ans1 <- sapply(pset4, function(i) ergm::summary_formula(i ~ ttriad))})
@@ -173,5 +242,65 @@ Follow the instructions available on github https://github.com/muriteams/ergmito
 
 -   As mentioned in the previous section, the list of available statistics is provided by `AVAILABLE_STATS()`.
 
-    
+
+## gnet: Reproducing the example of the presentation
+
+```{r part3-gnet-example-setup}
+library(ergmito)
+library(gnet)
+# Loading the fivents dataset. We actually know that data generating process,
+# so we use these paramaters for the model
+data(fivenets, package="ergmito")
+```
+
+```{r part3-gnet-example-dgp}
+# We will generate a group level variable that is related to the proportion of
+# females in the group
+set.seed(52)
+# y <- count_stats(fivenets ~ nodeocov("female"))
+# y <- y + rnorm(nnets(fivenets))
+y <- structure(c(1.01380909984854, 0.605144783941265, 4.30851530552903, 
+0.954760011709497, -0.133078830968053), .Dim = c(5L, 1L), .Dimnames = list(
+    NULL, "nodeocov(\"female\")"))
+```
+
+```{r part3-gnet-example-test}
+# First, we define the function
+f02 <- function(g, y) {
+  cor(count_stats(g ~ nodeocov("female")), y, use = "complete.obs")[1] 
+}
+
+# Then we can simple call the fuction struct_test to do it for us:
+test_struct <- struct_test(
+  fivenets ~ edges + nodematch("female"), y = y, R=3000,
+  stat = f02
+  )
+test_struct
+```
+
+Let's see what we have here:
+
+```{r part3-gnet-example-str}
+names(test_struct)
+test_struct$samplers
+```
+
+
+```{r part3-gnet-example-ols}
+# Comparing with what we get from a
+x <- count_stats(fivenets ~ nodeocov("female"))
+(test_ols <- summary(lm(y ~ x)))
+```
+
+Results
+
+```{r part3-gnet-example-plot}
+op <- par(mfrow=c(1, 2))
+hist(test_struct$t, breaks=50, col="gray", border="transparent", main = "Null distribution of t",
+     xlab = "Values of t")
+abline(v = test_struct$t0, col="steelblue", lwd=2, lty="dashed")
+plot(y ~ x, main = "Linear regression", xlab="s(g)", ylab = "y")
+abline(lm(y~x), lty="dashed", lwd=2)
+par(op)
+```
 
