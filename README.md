@@ -16,11 +16,15 @@ estimates directly (without using simulations), avoiding common problems that
 arise from methods that rely on approximations instead. This is joint work with
 [Prof. Kayla de la Haye (USC)](https://www.kayladelahaye.net/).
 
+Slides available [here](talk/index.pdf) ([handout](talk/ggvy-nu2019-talk-handout.pdf))
+
 # Workshop
 
 A workshop on the R packages [ergmito](https://github.com/muriteams/ergmito) and
 [gnet](https://github.com/muriteams/gnet) for applying the methods introduced
 during the talk will be conducted on location and time TBA.
+
+Workshop materials available [here](workshop) ([source code](workshop/index.Rmd))
 
 # About the Speaker
 
