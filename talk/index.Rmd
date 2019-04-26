@@ -3,7 +3,7 @@ title: "Big Problems for \\color{USCCardinal} Small Networks\\color{black}: Stat
 author:
   - "\\textbf{George G Vega Yon}"
   - "Kayla de la Haye \\vspace{-.5cm}"
-date: "SONIC Speaker Series\\linebreak[4]Northwestern University, IL\\linebreak[4]March 20, 2019"
+date: "Social Network Research Group\\linebreak[4]UCI\\linebreak[4]April 29, 2019"
 institute:
   - "\\includegraphics[width=.15\\linewidth]{usc.pdf}\\linebreak[4]Department of Preventive Medicine"
 output:
@@ -11,7 +11,7 @@ output:
     keep_tex: true
     includes:
       in_header: ergmitos-header.tex
-# classoption: handout
+classoption: handout
 fontsize: 10pt
 aspectratio: 169
 nocite: |
@@ -22,7 +22,7 @@ bibliography: bibliography.bib
 ```{r setup, include=FALSE}
 knitr::knit_hooks$set(smallsize = function(before, options, envir) {
     if (before) {
-        "\\footnotesize\n\n"
+        "\\scriptsize\n\n"
     } else {
         "\n\\normalsize\n\n"
     }
@@ -59,7 +59,7 @@ of Southern California’s Center for High-Performance Computing (https://hpcc.u
 \endcol
 \endcols
 
-We thank members of our MURI research team, USC's Center for Applied Network Analysis, Andrew Slaughter, and attendees of the NASN 2018 conference for their comments.
+We thank members of our MURI research team, USC's Center for Applied Network Analysis, NU's SONIC lab, Garry Robins, Andrew Slaughter, and attendees of the NASN 2018 conference for their comments.
 
 
 \begin{figure}
@@ -108,7 +108,7 @@ We are trying to answer these two questions with the following experimental data
 \caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Csardi, 2015). Figure drawn using the R package \textbf{netplot} (yours truly, https://github.com/usccana/netplot)}
 \end{figure}\pause
 
-\large How can we explain what we see here? \normalsize
+<!-- \large How can we explain what we see here? \normalsize -->
 
 ## ERGMs... the \textit{lingua franca} of SNA
 
@@ -386,6 +386,20 @@ texreg::texreg(model1)
 # cat(gsub("#", "\\#", unclass(out), fixed=TRUE))
 ```
 
+---
+
+
+```{r gof-fivenets, cache=TRUE}
+(gof1 <- gof_ergmito(model1))
+```
+
+
+---
+
+```{r gof-fivenets-print, cache=TRUE, out.width=".7\\linewidth", fig.align='center', width=8, height=6}
+plot(gof1)
+```
+
 
 ## Simulation Study
 			
@@ -422,16 +436,16 @@ library(ergmito)
 library(magrittr)
 library(texreg)
 
-final      <- readRDS("ci-and-ergms-models/ergmito_final.rds")
-influence  <- readRDS("ci-and-ergms-models/ergmito_final_influence.rds")
+# final      <- readRDS("ci-and-ergms-models/ergmito_final.rds")
+influence  <- readRDS("ci-and-ergms-models/ergmito_influence_final.rds")
 leadership <- readRDS("ci-and-ergms-models/ergmito_leader_final.rds")
-advice     <- readRDS("ci-and-ergms-models/ergmito_final_advice.rds")
+advice     <- readRDS("ci-and-ergms-models/ergmito_advice_final.rds")$`RME+Female+SI3Fac1`
 
 # Subseting the models that Kayla presented in the Review
 list(
-  Advice     = advice$`RME+Female+SI3Fac1`,
+  Advice     = advice,
   Influence  = influence$`T. Triad`,
-  Leadership = leadership$Female
+  Leadership = leadership$`T. Triad`
 ) %>% 
   texreg(
     caption = paste(
@@ -447,7 +461,26 @@ list(
 
 ```
 
+----
 
+```{r preliminary-results-gof-advice, width=9, height=6, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
+library(ergmito)
+plot(gof_ergmito(advice), main = "Goodness-of-fit Statistics", sub = "Advice Seeking Network")
+```
+
+----
+
+```{r preliminary-results-gof-influence, width=9, height=2, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
+library(ergmito)
+plot(gof_ergmito(influence$`T. Triad`), main = "Goodness-of-fit Statistics", sub = "Influence Network")
+```
+
+----
+
+```{r preliminary-results-gof-ledership, width=9, height=2, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
+library(ergmito)
+plot(gof_ergmito(leadership$`T. Triad`), main = "Goodness-of-fit Statistics", sub = "Leadership Network")
+```
 
 # Part II: Association between network structure and team performance
 
