@@ -422,8 +422,9 @@ library(ergmito)
 library(magrittr)
 library(texreg)
 
+final      <- readRDS("ci-and-ergms-models/ergmito_final.rds")
 influence  <- readRDS("ci-and-ergms-models/ergmito_final_influence.rds")
-leadership <- readRDS("ci-and-ergms-models/ergmito_final_leader.rds")
+leadership <- readRDS("ci-and-ergms-models/ergmito_leader_final.rds")
 advice     <- readRDS("ci-and-ergms-models/ergmito_final_advice.rds")
 
 # Subseting the models that Kayla presented in the Review

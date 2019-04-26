@@ -2,3 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
+*.aux
+*.bbl
+*.log
+
+*.nav
+*.snm
+*.toc
+*.vrb
+
