@@ -16,7 +16,12 @@ estimates directly (without using simulations), avoiding common problems that
 arise from methods that rely on approximations instead. This is joint work with
 [Prof. Kayla de la Haye (USC)](https://www.kayladelahaye.net/).
 
-Slides available [here](talk/index.pdf) ([handout](talk/ggvy-nu2019-talk-handout.pdf))
+Slides available:
+
+- SONIC at Northwestern University, March 2019 [slides](https://github.com/gvegayon/nu2019/raw/nu03-2019/talk/index.pdf) ([handout](https://github.com/gvegayon/nu2019/raw/nu03-2019/talk/ggvy-nu2019-talk-handout.pdf))
+
+- SNRG at University of California Irvine, April 2019
+[slides](https://github.com/gvegayon/nu2019/raw/uci04-2019/talk/index.pdf) ([handout](https://github.com/gvegayon/nu2019/raw/uci04-2019/talk/ggvy-uci2019-talk-handout.pdf))
 
 # Workshop
 

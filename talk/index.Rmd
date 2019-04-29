@@ -11,7 +11,7 @@ output:
     keep_tex: true
     includes:
       in_header: ergmitos-header.tex
-classoption: handout
+# classoption: handout
 fontsize: 10pt
 aspectratio: 169
 nocite: |
@@ -59,7 +59,7 @@ of Southern California’s Center for High-Performance Computing (https://hpcc.u
 \endcol
 \endcols
 
-We thank members of our MURI research team, USC's Center for Applied Network Analysis, NU's SONIC lab, Garry Robins, Andrew Slaughter, and attendees of the NASN 2018 conference for their comments.
+We thank members of our MURI research team, USC's Center for Applied Network Analysis, NU's SONIC lab, Garry Robins, Andrew Slaughter, Carter Butts, and attendees of the NASN 2018 conference for their comments.
 
 
 \begin{figure}
@@ -106,7 +106,7 @@ We are trying to answer these two questions with the following experimental data
 \centering
 \includegraphics[height=.7\textheight]{ukfaculty-igraph.png}
 \caption{Friendship network of a UK university faculty. Source: \textbf{igraphdata} R package (Csardi, 2015). Figure drawn using the R package \textbf{netplot} (yours truly, https://github.com/usccana/netplot)}
-\end{figure}\pause
+\end{figure}
 
 <!-- \large How can we explain what we see here? \normalsize -->
 
@@ -130,7 +130,7 @@ We are trying to answer these two questions with the following experimental data
   
 - In the case of directed networks, $\GRAPH$ has $2^{n(n-1)}$ terms.\pause
 
-- See Wasserman, Pattison, Robins, Snijders, Handcock and others.
+- See Wasserman, Pattison, Robins, Snijders, Handcock, Butts, and others.
 
 
 ## Structures
@@ -237,9 +237,9 @@ Once it converges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\p
 
 \footnotesize
 
-- While significant advances have been made in the area, simulation based models can suffer from \textbf{model degeneracy} [@Handcock2003].\pause
+- While significant advances have been made in the area, MC(approximate) based estimation algorithms can suffer from \textbf{inference degeneracy} [@Handcock2003].\pause
 
-- This occurs when the model parameters \textit{live in a degenerate region}. This impacts directly the MCMC process yielding poor mixing\pause
+- This occurs when the model \textit{lives in a degenerate region} (data near the boundary of the interior of the sample space). This impacts directly the MCMC process yielding poor mixing\pause
 
 \begin{figure}
 \centering
@@ -247,7 +247,7 @@ Once it converges, the last value of $\hat\theta_0$ is the MCMC-MLE estimates.\p
 \caption{Model degeneracy. Figure 5 in Handcock (2003)}
 \end{figure}\pause
 
-- Model degeneracy is particularly problematic with small networks... (says anyone who has tried to fit one).
+- Inference degeneracy is particularly problematic with small networks... (says anyone who has tried to fit one).
 
 \normalsize
 
@@ -300,7 +300,7 @@ By skipping the MCMC part we:\pause
 
 2.  *avoid the degeneracy problem* latent in MCMC, and\pause
 
-3.  obtain *more accurate* (exact) estimates *faster*. \pause
+3.  obtain *more accurate* estimates *faster*. \pause
 
 We have implemented  this and more in the `ergmito` R package
 
@@ -316,6 +316,8 @@ Sidetrack...
 \hspace{.5cm} \textit{¿Me darías una tac\textcolor{USCCardinal}{\textbf{ita}} de azúcar?} / \textit{Would you give me a small cup of sugar?}
 \normalsize
 \end{minipage}\pause
+
+% Screen shot of ERGMito tweet.
 
 \alert{Special thanks to George Barnett who proposed the name during the 2018 NASN!}
 
@@ -406,7 +408,7 @@ plot(gof1)
 			
 We conducted a simulation study to explore the properties of MLE for small networks (a.k.a. ERGMito). To generate each sample of teams:\pause
 
-1. Draw the **population parameters** from a piecewise Uniform with values in $[-4, -.1]\cup[.1, 4]$\pause
+1. Draw the **population parameters** from a piecewise Uniform with values in $[-2.5, -.1]\cup[.1, 2.5]$\pause
 
 2. We will draw **groups of sizes 3 to 5**. The number of networks per group size are drawn from a Poisson distribution with parameter 10 (hence, an expected size of 30 networks per sample).\pause
 
@@ -463,21 +465,21 @@ list(
 
 ----
 
-```{r preliminary-results-gof-advice, width=9, height=6, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
+```{r preliminary-results-gof-advice, fig.width=9, fig.height=6, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
 library(ergmito)
 plot(gof_ergmito(advice), main = "Goodness-of-fit Statistics", sub = "Advice Seeking Network")
 ```
 
 ----
 
-```{r preliminary-results-gof-influence, width=9, height=2, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
+```{r preliminary-results-gof-influence, fig.width=9, fig.height=4.5, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
 library(ergmito)
 plot(gof_ergmito(influence$`T. Triad`), main = "Goodness-of-fit Statistics", sub = "Influence Network")
 ```
 
 ----
 
-```{r preliminary-results-gof-ledership, width=9, height=2, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
+```{r preliminary-results-gof-ledership, fig.width=9, fig.height=4.5, out.width=".75\\linewidth", echo=FALSE, eval=TRUE, cache=FALSE, fig.align='center'}
 library(ergmito)
 plot(gof_ergmito(leadership$`T. Triad`), main = "Goodness-of-fit Statistics", sub = "Leadership Network")
 ```
